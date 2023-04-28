@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hive/controllers/gc_list_controller.dart';
 import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/entry/login.dart';
 import 'package:hive/screens/entry/register.dart';
@@ -14,8 +15,12 @@ class AuthController extends GetxController {
   var email;
   get user_email => email;
 
+  var user_details;
+
   FirebaseAuth auth = FirebaseAuth.instance;
   UserController userController = Get.put(UserController());
+  GC_Controller gcController = Get.put(GC_Controller());
+
   @override
   void onReady() {
     super.onReady();
@@ -29,7 +34,8 @@ class AuthController extends GetxController {
     if (user == null) {
       Get.offAll(() => Splash());
     } else {
-      email = user.email;
+      UserController.instance.getUserByEmail(user.email);
+
       update();
       Get.offAll(Home());
     }

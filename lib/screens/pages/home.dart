@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:hive/controllers/auth_controller.dart';
 import 'package:hive/controllers/gc_list_controller.dart';
@@ -94,8 +92,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    GC_Controller gc_controller = Get.put(GC_Controller());
-    UserController.instance.getUserByEmail(AuthController.instance.user_email);
     return Scaffold(
       key: _key,
       resizeToAvoidBottomInset: false,
@@ -183,6 +179,8 @@ class _HomeState extends State<Home> {
             color: Color.fromRGBO(21, 21, 21, 1),
           ));
         } else {
+          GC_Controller.instance
+              .getUserGroupChats(UserController.instance.user['user_id']);
           return Column(
             children: [
               Container(
@@ -212,8 +210,8 @@ class _HomeState extends State<Home> {
                 margin: EdgeInsets.all(15),
                 height: MediaQuery.of(context).size.height * 0.75,
                 // color: Colors.white,
-                child: GetBuilder<UserController>(builder: (_) {
-                  if (UserController.instance.user['group_chats'].length == 0) {
+                child: GetBuilder<GC_Controller>(builder: (_) {
+                  if (GC_Controller.instance.gc_list.length == 0) {
                     return Column(
                       children: [
                         SizedBox(
@@ -265,48 +263,41 @@ class _HomeState extends State<Home> {
                       ],
                     );
                   } else {
-                    return ListView(
-                        padding: const EdgeInsets.all(0),
-                        children: <Widget>[
-                          for (int i = 0;
-                              i <
-                                  UserController
-                                      .instance.user['group_chats'].length;
-                              i++)
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    PageTransition(
-                                        type: PageTransitionType.rightToLeft,
-                                        child: Chat(
-                                          gc_details: UserController
-                                              .instance.user['group_chats'][i],
-                                        ),
-                                        duration: Duration(milliseconds: 300)));
-                              },
-                              child: Container(
-                                margin: EdgeInsets.all(5),
-                                padding: EdgeInsets.only(left: 11, top: 3),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.17,
-                                child: Text(
-                                    UserController.instance.user['group_chats']
-                                        [i],
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(253, 197, 8, 1),
-                                        fontSize: 30,
-                                        fontFamily: 'Montserrat')),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                    image: DecorationImage(
-                                        image:
-                                            AssetImage("assets/img/sample.jpg"),
-                                        fit: BoxFit.cover)),
-                              ),
-                            ),
-                        ]);
+                    var gc = GC_Controller.instance.gc_list;
+                    return ListView.builder(
+                      itemCount: gc.length,
+                      padding: const EdgeInsets.all(0),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: Chat(
+                                      gc_details: gc[index],
+                                    ),
+                                    duration: Duration(milliseconds: 300)));
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(5),
+                            padding: EdgeInsets.only(left: 11, top: 3),
+                            height: MediaQuery.of(context).size.height * 0.17,
+                            child: Text(gc[index]['name'],
+                                style: TextStyle(
+                                    color: Color.fromRGBO(253, 197, 8, 1),
+                                    fontSize: 30,
+                                    fontFamily: 'Montserrat')),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                                image: DecorationImage(
+                                    image: AssetImage("assets/img/sample.jpg"),
+                                    fit: BoxFit.cover)),
+                          ),
+                        );
+                      },
+                    );
                   }
                 }),
               )

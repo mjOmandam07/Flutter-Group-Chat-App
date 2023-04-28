@@ -15,19 +15,23 @@ class UserController extends GetxController {
   }
 
   void getUserByUserId(String user_id) async {
-    var query = await _user_table.where("user_id", isEqualTo: user_id);
-    user_details = query;
+    var query = await _user_table.where("user_id", isEqualTo: user_id).get();
+    user_details = query.docs[0];
     update();
   }
 
-  void getUserByEmail(String email) async {
+  void updateUserGC(String code, user_id) async {
+    var new_item = [code];
+    var query = await _user_table.where("user_id", isEqualTo: user_id).get();
+    _user_table
+        .doc(query.docs[0]['user_id'])
+        .update({"group_chats": FieldValue.arrayUnion(new_item)});
+    getUserByUserId(user_id);
+  }
+
+  void getUserByEmail(String? email) async {
     var query = await _user_table.where("email", isEqualTo: email).get();
-    var new_item = ['asdads'];
-    // _user_table
-    //     .doc(query.docs[0]['user_id'])
-    //     .update({"group_chats": FieldValue.arrayUnion(new_item)});
     user_details = query.docs[0];
-    print(user_details['group_chats'].runtimeType);
     update();
   }
 }

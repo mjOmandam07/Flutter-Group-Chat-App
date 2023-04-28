@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/controllers/gc_list_controller.dart';
+import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/pages/home.dart';
 import 'package:hive/screens/utils/snackbars/snacks.dart';
 import 'package:page_transition/page_transition.dart';
@@ -64,7 +65,8 @@ class CreateGC extends StatelessWidget {
             }
             Snacks().snack_wait();
             Future.delayed(const Duration(seconds: 1), () {
-              GC_Controller.instance.addGC(_create_gc_controller.text);
+              GC_Controller.instance.addGC(_create_gc_controller.text,
+                  UserController.instance.user['user_id']);
               Navigator.pop(
                   context,
                   PageTransition(

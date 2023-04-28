@@ -1,13 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/controllers/user_controller.dart';
+import 'package:hive/screens/utils/functions/random_char.dart';
 import 'package:hive/screens/utils/snackbars/snacks.dart';
 
 class GC_Controller extends GetxController {
   static GC_Controller instance = Get.find();
-  List group_chats = [
-    {'name': 'Group Chat', 'image': 'sample.jpg', 'code': 'great'},
-    {'name': 'Hive', 'image': 'default_gc.png', 'code': 'neats'}
-  ];
+
+  CollectionReference _gc_table =
+      FirebaseFirestore.instance.collection('group_chat');
+  List group_chats = [];
+  // {'name': 'Group Chat', 'image': 'sample.jpg', 'code': 'great'},
+  // {'name': 'Hive', 'image': 'default_gc.png', 'code': 'neats'}
 
   List other_group_chats = [
     {'name': 'Creed Chat', 'image': 'sample.jpg', 'code': 'creed'},
@@ -18,20 +23,27 @@ class GC_Controller extends GetxController {
 
   Map get gc_details => empty_details;
 
-  List get gc_list => group_chats.reversed.toList();
+  List get gc_list => group_chats;
 
-  void addGC(String name) {
-    int current_count = gc_list.length;
+  void addGC(String name, user_id) async {
+    try {
+      String code = generateCode(5);
+      var timestamp = DateTime.now().microsecondsSinceEpoch;
 
-    Map newGC = {
-      'name': name,
-      'image': 'default_gc.png',
-      'code': 'code${current_count++}'
-    };
-    group_chats.add(newGC);
-    update();
+      Map<String, dynamic> newGC = {
+        'code': code,
+        'name': name,
+        'date_created': timestamp.toString(),
+        'image': 'default_gc.png',
+        'people': [user_id]
+      };
 
-    Snacks().snack_success('Hive Created!', 'New Hive: ${name} Created!');
+      await _gc_table.doc(code).set(newGC);
+      UserController.instance.updateUserGC(code, user_id);
+      Snacks().snack_success('Hive Created!', 'New Hive: ${name} Created!');
+    } catch (e) {
+      Snacks().snack_failed('Hive Creation Failed!', 'Something went wrong');
+    }
   }
 
   Future joinGC(String code) async {
@@ -48,6 +60,12 @@ class GC_Controller extends GetxController {
         return false;
       }
     }
+  }
+
+  void getUserGroupChats(user_id) async {
+    var query = await _gc_table.where("people", arrayContains: user_id).get();
+    group_chats = query.docs;
+    update();
   }
 
   void GetGCDetails(String code) async {

@@ -9,7 +9,7 @@ import 'package:page_transition/page_transition.dart';
 class Chat extends StatefulWidget {
   Chat({Key? key, required this.gc_details}) : super(key: key);
 
-  Map gc_details;
+  Map<String, dynamic> gc_details;
 
   /* CHAR2 RANI 'Map gc_details' PERO ANG PLANO JD KAY (ANG CODE ANG IPASA? OR ANG DETAILS MISMO SA GC ANG IPASA?) 
   DAYON ANG CODE GAMITON INIG FETCH SA MGA CHAT
