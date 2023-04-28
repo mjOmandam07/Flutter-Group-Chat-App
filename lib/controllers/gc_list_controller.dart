@@ -19,9 +19,9 @@ class GC_Controller extends GetxController {
     {'name': 'Breed Chat', 'image': 'default_gc.png', 'code': 'breed'}
   ];
 
-  Map empty_details = {'name': '', 'image': '', 'code': ''};
+  var gcDetails;
 
-  Map get gc_details => empty_details;
+  get gc_details => gcDetails;
 
   List get gc_list => group_chats;
 
@@ -69,13 +69,16 @@ class GC_Controller extends GetxController {
   }
 
   void GetGCDetails(String code) async {
-    for (int i = 0; i < group_chats.length; i++) {
-      print('Code ${group_chats[i]['code']} : ${code}');
-      if (group_chats[i]['code'] == code) {
-        var desired_gc_details = group_chats[i];
-        empty_details = desired_gc_details;
-        update();
-      }
-    }
+    var query = await _gc_table.where("code", isEqualTo: code).get();
+    gcDetails = query.docs[0];
+    update();
+    // for (int i = 0; i < group_chats.length; i++) {
+    //   print('Code ${group_chats[i]['code']} : ${code}');
+    //   if (group_chats[i]['code'] == code) {
+    //     var desired_gc_details = group_chats[i];
+    //     gcDetails = desired_gc_details;
+    //     update();
+    //   }
+    // }
   }
 }

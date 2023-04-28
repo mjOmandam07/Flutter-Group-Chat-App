@@ -7,9 +7,8 @@ import 'package:hive/screens/pages/home.dart';
 import 'package:page_transition/page_transition.dart';
 
 class Chat extends StatefulWidget {
+  var gc_details;
   Chat({Key? key, required this.gc_details}) : super(key: key);
-
-  Map<String, dynamic> gc_details;
 
   /* CHAR2 RANI 'Map gc_details' PERO ANG PLANO JD KAY (ANG CODE ANG IPASA? OR ANG DETAILS MISMO SA GC ANG IPASA?) 
   DAYON ANG CODE GAMITON INIG FETCH SA MGA CHAT
@@ -20,6 +19,7 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
   var chatFieldController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     widget.gc_details;
@@ -93,7 +93,7 @@ class _ChatState extends State<Chat> {
                     width: MediaQuery.of(context).size.width * 0.03,
                   ),
                   Text(
-                    '20 People',
+                    '${widget.gc_details['people'].length.toString()} People',
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Montserrat',
