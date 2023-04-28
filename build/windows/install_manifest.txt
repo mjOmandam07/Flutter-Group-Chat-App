@@ -1,0 +1,15 @@
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/icudtl.dat
+D:/Flutter Projs/hive/build/windows/runner/Debug/flutter_windows.dll
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/AssetManifest.json
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/assets/fonts/Montserrat-ExtraBold.ttf
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/assets/fonts/Montserrat-Regular.ttf
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/assets/fonts/Montserrat-SemiBold.ttf
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/assets/img/default_gc.png
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/assets/img/logo.png
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/assets/img/sample.jpg
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/FontManifest.json
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/fonts/MaterialIcons-Regular.otf
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/kernel_blob.bin
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/NOTICES.Z
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf
+D:/Flutter Projs/hive/build/windows/runner/Debug/data/flutter_assets/shaders/ink_sparkle.frag
