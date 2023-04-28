@@ -2,9 +2,9 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/entry/login.dart';
+import 'package:hive/screens/entry/register.dart';
 import 'package:hive/screens/pages/home.dart';
 import 'package:hive/screens/splash/splash_screen.dart';
-import 'package:hive/screens/utils/screens/loading_screen.dart';
 import 'package:hive/screens/utils/snackbars/snacks.dart';
 
 class AuthController extends GetxController {
@@ -41,6 +41,7 @@ class AuthController extends GetxController {
           email: user_details['email'], password: user_details['password']);
       userController.addUser(user_details);
     } catch (e) {
+      Get.to(() => Register());
       Snacks().snack_failed('Account Creation Failed', e.toString());
     }
   }
@@ -49,6 +50,7 @@ class AuthController extends GetxController {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
+      Get.to(() => Login());
       Snacks().snack_failed('Login Failed', e.toString());
     }
   }

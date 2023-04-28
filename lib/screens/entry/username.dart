@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:hive/controllers/auth_controller.dart';
 import 'package:hive/screens/pages/home.dart';
+import 'package:hive/screens/utils/screens/loading_screen.dart';
 import 'dart:math';
 
 import 'package:uuid/uuid.dart';
@@ -154,6 +155,8 @@ class _UsernameState extends State<Username> {
                   user_details['user_id'] = user_id;
                   user_details['username'] = username_controller.text;
                   AuthController.instance.register(user_details);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoadingScreen()));
                   // print(user_details);
 
                   // Navigator.push(

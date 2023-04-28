@@ -16,7 +16,9 @@ class LoadingScreen extends StatelessWidget {
         width: 100,
         height: 100,
         child: CircularProgressIndicator(
-            backgroundColor: Color.fromRGBO(255, 111, 167, 1)),
+          backgroundColor: Color.fromRGBO(253, 197, 8, 1),
+          color: Color.fromRGBO(21, 21, 21, 1),
+        ),
       )),
     );
     ;

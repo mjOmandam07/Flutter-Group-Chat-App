@@ -6,6 +6,7 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:hive/controllers/auth_controller.dart';
 import 'package:hive/screens/entry/register.dart';
 import 'package:hive/screens/pages/home.dart';
+import 'package:hive/screens/utils/screens/loading_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
 class Login extends StatefulWidget {
@@ -190,8 +191,8 @@ class _LoginState extends State<Login> {
                 onTap: () {
                   AuthController.instance.login(_email_controller.text.trim(),
                       _password_controller.text.trim());
-                  // Navigator.push(
-                  //     context, MaterialPageRoute(builder: (context) => Home()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoadingScreen()));
                 },
                 child: Container(
                   margin: EdgeInsets.only(left: 15, right: 15, top: 50),

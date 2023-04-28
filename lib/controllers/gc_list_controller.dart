@@ -19,6 +19,7 @@ class GC_Controller extends GetxController {
   Map get gc_details => empty_details;
 
   List get gc_list => group_chats.reversed.toList();
+
   void addGC(String name) {
     int current_count = gc_list.length;
 

@@ -124,7 +124,7 @@ class _HomeState extends State<Home> {
             DrawerHeader(
               child: Padding(
                 padding: const EdgeInsets.only(top: 40),
-                child: Text("afsfa",
+                child: Text("Setting",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Montserrat',
@@ -234,20 +234,31 @@ class _HomeState extends State<Home> {
                               fontFamily: 'Montserrat',
                               fontSize: 26),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 15, right: 15, top: 15),
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.07,
-                          decoration: BoxDecoration(
-                              color: Color.fromRGBO(253, 197, 8, 1),
-                              borderRadius: BorderRadius.circular(18)),
-                          child: Center(
-                            child: Text(
-                              'New Hive',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'Montserrat-SemiBold'),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.bottomToTop,
+                                    child: CreateGroupChat(),
+                                    duration: Duration(milliseconds: 400)));
+                          },
+                          child: Container(
+                            margin:
+                                EdgeInsets.only(left: 15, right: 15, top: 15),
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(253, 197, 8, 1),
+                                borderRadius: BorderRadius.circular(18)),
+                            child: Center(
+                              child: Text(
+                                'New Hive',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'Montserrat-SemiBold'),
+                              ),
                             ),
                           ),
                         ),
