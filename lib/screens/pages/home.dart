@@ -20,13 +20,6 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
-  @override
-  void initState() {
-    UserController.instance.getUserByEmail(AuthController.instance.user_email);
-    print("first");
-    // super.initState();
-  }
-
   void _onItemTapped(int index) {
     if (index == 0) {
       _key.currentState?.openDrawer();
@@ -85,7 +78,8 @@ class _HomeState extends State<Home> {
                     borderRadius: BorderRadius.circular(5)),
                 child: TextButton(
                     onPressed: () {
-                      Navigator.of(context, rootNavigator: true).pop('dialog');
+                      AuthController.instance.logout();
+                      // Navigator.of(context, rootNavigator: true).pop('dialog');
                     },
                     child: Text(
                       'Buzz off',
@@ -101,6 +95,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     GC_Controller gc_controller = Get.put(GC_Controller());
+    UserController.instance.getUserByEmail(AuthController.instance.user_email);
     return Scaffold(
       key: _key,
       resizeToAvoidBottomInset: false,
@@ -129,8 +124,7 @@ class _HomeState extends State<Home> {
             DrawerHeader(
               child: Padding(
                 padding: const EdgeInsets.only(top: 40),
-                child: Text(
-                    "UserController.instance.user['group_chats'].toString()",
+                child: Text("afsfa",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Montserrat',
@@ -181,116 +175,134 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.fromLTRB(16, 50, 10, 16),
-            child: TextField(
-              // textAlign: TextAlign.center,
-              cursorColor: Color.fromRGBO(253, 197, 8, 1),
-              style: TextStyle(fontFamily: 'Montserrat', fontSize: 16),
-              decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: "Search Hive",
-                  hintStyle: TextStyle(
-                    fontFamily: 'Montserrat-Semibold',
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color.fromRGBO(253, 197, 8, 1))),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(color: Colors.white))),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.all(15),
-            height: MediaQuery.of(context).size.height * 0.75,
-            // color: Colors.white,
-            child: GetBuilder<GC_Controller>(builder: (_) {
-              if (gc_controller.gc_list.length == 0) {
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    Text(
-                      'No Hive?',
-                      style: TextStyle(
-                          color: Color.fromRGBO(253, 197, 8, 1),
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w900,
-                          fontSize: 70),
-                    ),
-                    Text(
-                      'Join or Create Hive now!',
-                      style: TextStyle(
-                          color: Color.fromRGBO(253, 197, 8, 1),
-                          fontFamily: 'Montserrat',
-                          fontSize: 26),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 15, right: 15, top: 15),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.07,
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(253, 197, 8, 1),
-                          borderRadius: BorderRadius.circular(18)),
-                      child: Center(
-                        child: Text(
-                          'New Hive',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: 'Montserrat-SemiBold'),
-                        ),
+      body: GetBuilder<UserController>(builder: (_) {
+        if (UserController.instance.user == null) {
+          return Center(
+              child: CircularProgressIndicator(
+            backgroundColor: Color.fromRGBO(253, 197, 8, 1),
+            color: Color.fromRGBO(21, 21, 21, 1),
+          ));
+        } else {
+          return Column(
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(16, 50, 10, 16),
+                child: TextField(
+                  // textAlign: TextAlign.center,
+                  cursorColor: Color.fromRGBO(253, 197, 8, 1),
+                  style: TextStyle(fontFamily: 'Montserrat', fontSize: 16),
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: "Search Hive",
+                      hintStyle: TextStyle(
+                        fontFamily: 'Montserrat-Semibold',
                       ),
-                    ),
-                  ],
-                );
-              } else {
-                return ListView(
-                    padding: const EdgeInsets.all(0),
-                    children: <Widget>[
-                      for (int i = 0; i < gc_controller.gc_list.length; i++)
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: Chat(
-                                      gc_details: gc_controller.gc_list[i],
-                                    ),
-                                    duration: Duration(milliseconds: 300)));
-                          },
-                          child: Container(
-                            margin: EdgeInsets.all(5),
-                            padding: EdgeInsets.only(left: 11, top: 3),
-                            height: MediaQuery.of(context).size.height * 0.17,
-                            child: Text(gc_controller.gc_list[i]['name'],
-                                style: TextStyle(
-                                    color: Color.fromRGBO(253, 197, 8, 1),
-                                    fontSize: 30,
-                                    fontFamily: 'Montserrat')),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/img/${gc_controller.gc_list[i]['image']}"),
-                                    fit: BoxFit.cover)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(253, 197, 8, 1))),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.white))),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.all(15),
+                height: MediaQuery.of(context).size.height * 0.75,
+                // color: Colors.white,
+                child: GetBuilder<UserController>(builder: (_) {
+                  if (UserController.instance.user['group_chats'].length == 0) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                        ),
+                        Text(
+                          'No Hive?',
+                          style: TextStyle(
+                              color: Color.fromRGBO(253, 197, 8, 1),
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 70),
+                        ),
+                        Text(
+                          'Join or Create Hive now!',
+                          style: TextStyle(
+                              color: Color.fromRGBO(253, 197, 8, 1),
+                              fontFamily: 'Montserrat',
+                              fontSize: 26),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 15, right: 15, top: 15),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.07,
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(253, 197, 8, 1),
+                              borderRadius: BorderRadius.circular(18)),
+                          child: Center(
+                            child: Text(
+                              'New Hive',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontFamily: 'Montserrat-SemiBold'),
+                            ),
                           ),
                         ),
-                    ]);
-              }
-            }),
-          )
-        ],
-      ),
+                      ],
+                    );
+                  } else {
+                    return ListView(
+                        padding: const EdgeInsets.all(0),
+                        children: <Widget>[
+                          for (int i = 0;
+                              i <
+                                  UserController
+                                      .instance.user['group_chats'].length;
+                              i++)
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        child: Chat(
+                                          gc_details: UserController
+                                              .instance.user['group_chats'][i],
+                                        ),
+                                        duration: Duration(milliseconds: 300)));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(5),
+                                padding: EdgeInsets.only(left: 11, top: 3),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.17,
+                                child: Text(
+                                    UserController.instance.user['group_chats']
+                                        [i],
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(253, 197, 8, 1),
+                                        fontSize: 30,
+                                        fontFamily: 'Montserrat')),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                    image: DecorationImage(
+                                        image:
+                                            AssetImage("assets/img/sample.jpg"),
+                                        fit: BoxFit.cover)),
+                              ),
+                            ),
+                        ]);
+                  }
+                }),
+              )
+            ],
+          );
+        }
+      }),
     );
   }
 }

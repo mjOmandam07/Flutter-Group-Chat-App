@@ -4,6 +4,7 @@ import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/entry/login.dart';
 import 'package:hive/screens/pages/home.dart';
 import 'package:hive/screens/splash/splash_screen.dart';
+import 'package:hive/screens/utils/screens/loading_screen.dart';
 import 'package:hive/screens/utils/snackbars/snacks.dart';
 
 class AuthController extends GetxController {
@@ -50,5 +51,9 @@ class AuthController extends GetxController {
     } catch (e) {
       Snacks().snack_failed('Login Failed', e.toString());
     }
+  }
+
+  void logout() async {
+    await auth.signOut();
   }
 }

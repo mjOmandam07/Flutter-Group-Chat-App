@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:hive/controllers/auth_controller.dart';
 import 'package:hive/screens/entry/register.dart';
 import 'package:hive/screens/pages/home.dart';
 import 'package:page_transition/page_transition.dart';
@@ -187,8 +188,10 @@ class _LoginState extends State<Login> {
               //Login BUTTON
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Home()));
+                  AuthController.instance.login(_email_controller.text.trim(),
+                      _password_controller.text.trim());
+                  // Navigator.push(
+                  //     context, MaterialPageRoute(builder: (context) => Home()));
                 },
                 child: Container(
                   margin: EdgeInsets.only(left: 15, right: 15, top: 50),

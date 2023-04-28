@@ -27,7 +27,7 @@ class UserController extends GetxController {
     //     .doc(query.docs[0]['user_id'])
     //     .update({"group_chats": FieldValue.arrayUnion(new_item)});
     user_details = query.docs[0];
-    print(user_details['group_chats']);
+    print(user_details['group_chats'].runtimeType);
     update();
   }
 }
