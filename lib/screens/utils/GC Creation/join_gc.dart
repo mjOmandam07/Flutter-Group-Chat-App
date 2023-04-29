@@ -6,7 +6,9 @@ import 'package:hive/screens/utils/snackbars/snacks.dart';
 import 'package:page_transition/page_transition.dart';
 
 class JoinGC extends StatelessWidget {
-  var _join_gc_controller = TextEditingController();
+  TextEditingController code_controller;
+  JoinGC({Key? key, required this.code_controller}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -34,7 +36,7 @@ class JoinGC extends StatelessWidget {
       Container(
         margin: EdgeInsets.all(20),
         child: TextField(
-          controller: _join_gc_controller,
+          controller: code_controller,
           maxLength: 5,
           cursorColor: Color.fromRGBO(253, 197, 8, 1),
           style: TextStyle(fontFamily: 'Montserrat', fontSize: 16),
@@ -55,7 +57,7 @@ class JoinGC extends StatelessWidget {
       ),
       GestureDetector(
         onTap: () async {
-          if (_join_gc_controller.text != '') {
+          if (code_controller.text != '') {
             FocusScopeNode currentFocus = FocusScope.of(context);
 
             if (!currentFocus.hasPrimaryFocus) {
@@ -63,7 +65,7 @@ class JoinGC extends StatelessWidget {
             }
             Snacks().snack_wait();
             Future.delayed(const Duration(seconds: 1), () {
-              GC_Controller.instance.joinGC(_join_gc_controller.text,
+              GC_Controller.instance.joinGC(code_controller.text,
                   UserController.instance.user['user_id']);
               Navigator.pop(
                   context,

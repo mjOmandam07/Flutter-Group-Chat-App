@@ -75,8 +75,8 @@ class _HomeState extends State<Home> {
                     color: Color.fromRGBO(253, 197, 8, 1),
                     borderRadius: BorderRadius.circular(5)),
                 child: TextButton(
-                    onPressed: () {
-                      GC_Controller.instance.refresh_gc();
+                    onPressed: () async {
+                      await UserController.instance.clear_current_user();
                       AuthController.instance.logout();
                       // Navigator.of(context, rootNavigator: true).pop('dialog');
                     },
@@ -270,7 +270,9 @@ class _HomeState extends State<Home> {
                       padding: const EdgeInsets.all(0),
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () {
+                          onTap: () async {
+                            await GC_Controller.instance
+                                .GetGCDetails(gc[index]['code']);
                             Navigator.push(
                                 context,
                                 PageTransition(
@@ -284,7 +286,7 @@ class _HomeState extends State<Home> {
                             margin: EdgeInsets.all(5),
                             padding: EdgeInsets.only(left: 11, top: 3),
                             height: MediaQuery.of(context).size.height * 0.17,
-                            child: Text(gc[index],
+                            child: Text(gc[index]['name'],
                                 style: TextStyle(
                                     color: Color.fromRGBO(253, 197, 8, 1),
                                     fontSize: 30,

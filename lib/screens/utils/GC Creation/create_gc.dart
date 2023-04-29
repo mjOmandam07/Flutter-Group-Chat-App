@@ -7,7 +7,8 @@ import 'package:hive/screens/utils/snackbars/snacks.dart';
 import 'package:page_transition/page_transition.dart';
 
 class CreateGC extends StatelessWidget {
-  var _create_gc_controller = TextEditingController();
+  TextEditingController code_controller;
+  CreateGC({Key? key, required this.code_controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class CreateGC extends StatelessWidget {
       Container(
         margin: EdgeInsets.all(20),
         child: TextField(
-          controller: _create_gc_controller,
+          controller: code_controller,
           maxLength: 20,
           cursorColor: Color.fromRGBO(253, 197, 8, 1),
           style: TextStyle(fontFamily: 'Montserrat', fontSize: 16),
@@ -57,7 +58,7 @@ class CreateGC extends StatelessWidget {
       ),
       GestureDetector(
         onTap: () {
-          if (_create_gc_controller.text != '') {
+          if (code_controller.text != '') {
             FocusScopeNode currentFocus = FocusScope.of(context);
 
             if (!currentFocus.hasPrimaryFocus) {
@@ -65,7 +66,7 @@ class CreateGC extends StatelessWidget {
             }
             Snacks().snack_wait();
             Future.delayed(const Duration(seconds: 1), () {
-              GC_Controller.instance.addGC(_create_gc_controller.text,
+              GC_Controller.instance.addGC(code_controller.text,
                   UserController.instance.user['user_id']);
               Navigator.pop(
                   context,

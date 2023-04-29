@@ -12,11 +12,6 @@ class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<User?> _user;
 
-  var email;
-  get user_email => email;
-
-  var user_details;
-
   FirebaseAuth auth = FirebaseAuth.instance;
   UserController userController = Get.put(UserController());
   GC_Controller gcController = Get.put(GC_Controller());
@@ -30,13 +25,12 @@ class AuthController extends GetxController {
     ever(_user, _initialScreen);
   }
 
-  _initialScreen(User? user) {
+  _initialScreen(User? user) async {
     if (user == null) {
       Get.offAll(() => Splash());
     } else {
-      UserController.instance.getUserByEmail(user.email);
-      GC_Controller.instance.refresh_gc();
-      update();
+      // GC_Controller.instance.refresh_gc();
+      await UserController.instance.getUserByEmail(user.email);
       Get.offAll(Home());
     }
   }

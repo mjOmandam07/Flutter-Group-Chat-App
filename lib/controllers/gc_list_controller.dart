@@ -86,7 +86,7 @@ class GC_Controller extends GetxController {
     }
   }
 
-  void GetGCDetails(String code) async {
+  Future GetGCDetails(String code) async {
     var query = await _gc_table.where("code", isEqualTo: code).get();
     gcDetails = query.docs[0];
     update();

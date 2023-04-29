@@ -146,21 +146,12 @@ class _UsernameState extends State<Username> {
               GestureDetector(
                 onTap: () {
                   var user_id = '${username_controller.text}-${Uuid().v4()}';
-                  // Map user_to_reg = {
-                  //   'user_id': user_id,
-                  //   'email': user_details['email'],
-                  //   'password': user_details['password'],
-                  //   'username': username_controller.text
-                  // };
+
                   user_details['user_id'] = user_id;
                   user_details['username'] = username_controller.text;
                   AuthController.instance.register(user_details);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoadingScreen()));
-                  // print(user_details);
-
-                  // Navigator.push(
-                  //     context, MaterialPageRoute(builder: (context) => Home()));
                 },
                 child: Container(
                   margin: EdgeInsets.only(left: 15, right: 15, top: 10),

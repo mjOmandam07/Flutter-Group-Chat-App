@@ -25,9 +25,9 @@ class _CreateGroupChatState extends State<CreateGroupChat> {
     });
   }
 
+  var codeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var codeController = TextEditingController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -68,8 +68,14 @@ class _CreateGroupChatState extends State<CreateGroupChat> {
                   fontWeight: FontWeight.w900,
                   fontSize: 70),
             ),
-            if (_current_btn == 'Join Hive') CreateGC(),
-            if (_current_btn == 'Create Hive') JoinGC(),
+            if (_current_btn == 'Join Hive')
+              CreateGC(
+                code_controller: codeController,
+              ),
+            if (_current_btn == 'Create Hive')
+              JoinGC(
+                code_controller: codeController,
+              ),
             Center(
               child: Container(
                 margin: EdgeInsets.only(top: 25, bottom: 15, left: 14),

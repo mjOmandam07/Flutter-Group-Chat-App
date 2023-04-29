@@ -23,6 +23,8 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     widget.gc_details;
+    var group_chat_details = GC_Controller.instance.gc_details;
+
     double iconSize = MediaQuery.of(context).size.width;
     if (WidgetsBinding.instance.window.viewInsets.bottom != 0.0) {
       iconSize = 0;
@@ -53,8 +55,8 @@ class _ChatState extends State<Chat> {
             children: [
               GestureDetector(
                 onTap: () {
-                  GC_Controller.instance
-                      .GetGCDetails(widget.gc_details['code']);
+                  // GC_Controller.instance
+                  //     .GetGCDetails(widget.gc_details['code']);
                   Navigator.push(
                       context,
                       PageTransition(
@@ -63,7 +65,7 @@ class _ChatState extends State<Chat> {
                           duration: Duration(milliseconds: 300)));
                 },
                 child: Text(
-                  widget.gc_details['name'],
+                  group_chat_details['name'],
                   style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Montserrat',
@@ -93,7 +95,7 @@ class _ChatState extends State<Chat> {
                     width: MediaQuery.of(context).size.width * 0.03,
                   ),
                   Text(
-                    '${widget.gc_details['people'].length.toString()} People',
+                    '${group_chat_details['people'].length.toString()} People',
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Montserrat',

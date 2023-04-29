@@ -10,6 +10,11 @@ class UserController extends GetxController {
 
   get user => user_details;
 
+  Future clear_current_user() async {
+    user_details = null;
+    update();
+  }
+
   void addUser(user_details) async {
     await _user_table.doc(user_details['user_id']).set(user_details);
   }
@@ -31,7 +36,7 @@ class UserController extends GetxController {
     getUserByUserId(user_id);
   }
 
-  void getUserByEmail(String? email) async {
+  Future getUserByEmail(String? email) async {
     var query = await _user_table.where("email", isEqualTo: email).get();
     user_details = query.docs[0];
     update();
