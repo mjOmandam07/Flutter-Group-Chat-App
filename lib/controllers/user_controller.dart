@@ -20,8 +20,10 @@ class UserController extends GetxController {
     update();
   }
 
-  void updateUserGC(String code, user_id) async {
-    var new_item = [code];
+  void updateUserGC(String code, name, user_id) async {
+    var new_item = [
+      {'code': code, 'name': name}
+    ];
     var query = await _user_table.where("user_id", isEqualTo: user_id).get();
     _user_table
         .doc(query.docs[0]['user_id'])

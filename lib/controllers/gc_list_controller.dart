@@ -45,7 +45,7 @@ class GC_Controller extends GetxController {
       };
 
       await _gc_table.doc(code).set(newGC);
-      UserController.instance.updateUserGC(code, user_id);
+      UserController.instance.updateUserGC(code, name, user_id);
       Snacks().snack_success('Hive Created!', 'New Hive: ${name} Created!');
     } catch (e) {
       Snacks().snack_failed('Hive Creation Failed!', 'Something went wrong');
@@ -64,7 +64,7 @@ class GC_Controller extends GetxController {
           await _gc_table
               .doc(code)
               .update({"people": FieldValue.arrayUnion(new_item)});
-          UserController.instance.updateUserGC(code, user_id);
+          UserController.instance.updateUserGC(code, data['name'], user_id);
           Snacks().snack_success(
               'Hive Joined!', 'New Hive: ${data['name']} Joined!');
         }
@@ -76,11 +76,9 @@ class GC_Controller extends GetxController {
   }
 
   void getUserGroupChats(user_id) async {
-    print("GET PROVIDER ${user_id.runtimeType}");
     try {
       var query = await _gc_table.where("people", arrayContains: user_id).get();
       group_chats = query.docs;
-      print(query.docs);
       gc_update = true;
       update();
     } catch (e) {

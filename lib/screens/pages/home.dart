@@ -180,8 +180,6 @@ class _HomeState extends State<Home> {
             color: Color.fromRGBO(21, 21, 21, 1),
           ));
         } else {
-          GC_Controller.instance
-              .getUserGroupChats(UserController.instance.user['user_id']);
           return Column(
             children: [
               Container(
@@ -211,111 +209,96 @@ class _HomeState extends State<Home> {
                 margin: EdgeInsets.all(15),
                 height: MediaQuery.of(context).size.height * 0.75,
                 // color: Colors.white,
-                child: GetBuilder<GC_Controller>(builder: (_) {
-                  if (GC_Controller.instance.gc_refreshed == false) {
-                    return Center(
-                        child: CircularProgressIndicator(
-                      backgroundColor: Color.fromRGBO(253, 197, 8, 1),
-                      color: Color.fromRGBO(21, 21, 21, 1),
-                    ));
-                  } else {
-                    if (GC_Controller.instance.gc_list.length == 0) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05,
-                          ),
-                          Text(
-                            'No Hive?',
-                            style: TextStyle(
+                child: GetBuilder<UserController>(builder: (_) {
+                  var gc = UserController.instance.user['group_chats'].reversed
+                      .toList();
+
+                  if (gc.length == 0) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                        ),
+                        Text(
+                          'No Hive?',
+                          style: TextStyle(
+                              color: Color.fromRGBO(253, 197, 8, 1),
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 70),
+                        ),
+                        Text(
+                          'Join or Create Hive now!',
+                          style: TextStyle(
+                              color: Color.fromRGBO(253, 197, 8, 1),
+                              fontFamily: 'Montserrat',
+                              fontSize: 26),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            await Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.bottomToTop,
+                                    child: CreateGroupChat(),
+                                    duration: Duration(milliseconds: 400)));
+                          },
+                          child: Container(
+                            margin:
+                                EdgeInsets.only(left: 15, right: 15, top: 15),
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            decoration: BoxDecoration(
                                 color: Color.fromRGBO(253, 197, 8, 1),
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w900,
-                                fontSize: 70),
-                          ),
-                          Text(
-                            'Join or Create Hive now!',
-                            style: TextStyle(
-                                color: Color.fromRGBO(253, 197, 8, 1),
-                                fontFamily: 'Montserrat',
-                                fontSize: 26),
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              await Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.bottomToTop,
-                                      child: CreateGroupChat(),
-                                      duration: Duration(milliseconds: 400)));
-                              //     .then((value) {
-                              //   Future.delayed(const Duration(seconds: 1),
-                              //       () async {
-                              //     print("asdadsd");
-                              //     GC_Controller.instance.getUserGroupChats(
-                              //         UserController.instance.user['user_id']);
-                              //   });
-                              // });
-                            },
-                            child: Container(
-                              margin:
-                                  EdgeInsets.only(left: 15, right: 15, top: 15),
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(253, 197, 8, 1),
-                                  borderRadius: BorderRadius.circular(18)),
-                              child: Center(
-                                child: Text(
-                                  'New Hive',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontFamily: 'Montserrat-SemiBold'),
-                                ),
+                                borderRadius: BorderRadius.circular(18)),
+                            child: Center(
+                              child: Text(
+                                'New Hive',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'Montserrat-SemiBold'),
                               ),
                             ),
                           ),
-                        ],
-                      );
-                    } else {
-                      var gc = GC_Controller.instance.gc_list.reversed.toList();
-                      return ListView.builder(
-                        itemCount: gc.length,
-                        padding: const EdgeInsets.all(0),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.rightToLeft,
-                                      child: Chat(
-                                        gc_details: gc[index],
-                                      ),
-                                      duration: Duration(milliseconds: 300)));
-                            },
-                            child: Container(
-                              margin: EdgeInsets.all(5),
-                              padding: EdgeInsets.only(left: 11, top: 3),
-                              height: MediaQuery.of(context).size.height * 0.17,
-                              child: Text(gc[index]['name'],
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(253, 197, 8, 1),
-                                      fontSize: 30,
-                                      fontFamily: 'Montserrat')),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage("assets/img/sample.jpg"),
-                                      fit: BoxFit.cover)),
-                            ),
-                          );
-                        },
-                      );
-                    }
+                        ),
+                      ],
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: gc.length,
+                      padding: const EdgeInsets.all(0),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: Chat(
+                                      gc_details: gc[index],
+                                    ),
+                                    duration: Duration(milliseconds: 300)));
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(5),
+                            padding: EdgeInsets.only(left: 11, top: 3),
+                            height: MediaQuery.of(context).size.height * 0.17,
+                            child: Text(gc[index],
+                                style: TextStyle(
+                                    color: Color.fromRGBO(253, 197, 8, 1),
+                                    fontSize: 30,
+                                    fontFamily: 'Montserrat')),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                                image: DecorationImage(
+                                    image: AssetImage("assets/img/sample.jpg"),
+                                    fit: BoxFit.cover)),
+                          ),
+                        );
+                      },
+                    );
                   }
                 }),
               )
