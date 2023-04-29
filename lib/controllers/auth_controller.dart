@@ -35,7 +35,7 @@ class AuthController extends GetxController {
       Get.offAll(() => Splash());
     } else {
       UserController.instance.getUserByEmail(user.email);
-
+      GC_Controller.instance.refresh_gc();
       update();
       Get.offAll(Home());
     }

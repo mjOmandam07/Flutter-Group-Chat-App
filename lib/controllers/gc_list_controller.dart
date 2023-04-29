@@ -10,9 +10,6 @@ class GC_Controller extends GetxController {
 
   CollectionReference _gc_table =
       FirebaseFirestore.instance.collection('group_chat');
-  List group_chats = [];
-  // {'name': 'Group Chat', 'image': 'sample.jpg', 'code': 'great'},
-  // {'name': 'Hive', 'image': 'default_gc.png', 'code': 'neats'}
 
   List other_group_chats = [
     {'name': 'Creed Chat', 'image': 'sample.jpg', 'code': 'creed'},
@@ -20,10 +17,19 @@ class GC_Controller extends GetxController {
   ];
 
   var gcDetails;
-
   get gc_details => gcDetails;
 
+  List group_chats = [];
   List get gc_list => group_chats;
+
+  var gc_update = true;
+  get gc_refreshed => gc_update;
+
+  void refresh_gc() {
+    gc_update = false;
+    group_chats = [];
+    update();
+  }
 
   void addGC(String name, user_id) async {
     try {
@@ -46,26 +52,40 @@ class GC_Controller extends GetxController {
     }
   }
 
-  Future joinGC(String code) async {
-    for (int i = 0; i < other_group_chats.length; i++) {
-      print('Code ${other_group_chats[i]['code']} : ${code}');
-      if (other_group_chats[i]['code'] == code) {
-        group_chats.add(other_group_chats[i]);
-        update();
-        Snacks().snack_success('Hive Joined!',
-            'New Hive: ${other_group_chats[i]['name']} Joined!');
-        return true;
-      } else {
-        Snacks().snack_failed('Hive Join Failed!', 'Invalid Code');
-        return false;
-      }
+  void joinGC(String code, user_id) async {
+    try {
+      var query = await _gc_table.doc(code).get().then((value) async {
+        var data = value.data() as Map<String, dynamic>;
+        if (data['people'].contains(user_id)) {
+          Snacks().snack_failed(
+              'Hive Join Failed!', 'You are already a member of this Hive');
+        } else {
+          var new_item = [user_id];
+          await _gc_table
+              .doc(code)
+              .update({"people": FieldValue.arrayUnion(new_item)});
+          UserController.instance.updateUserGC(code, user_id);
+          Snacks().snack_success(
+              'Hive Joined!', 'New Hive: ${data['name']} Joined!');
+        }
+      });
+    } catch (e) {
+      Snacks().snack_failed('Hive Join Failed!',
+          'Something went wrong, Please Check your code if it is valid');
     }
   }
 
   void getUserGroupChats(user_id) async {
-    var query = await _gc_table.where("people", arrayContains: user_id).get();
-    group_chats = query.docs;
-    update();
+    print("GET PROVIDER ${user_id.runtimeType}");
+    try {
+      var query = await _gc_table.where("people", arrayContains: user_id).get();
+      group_chats = query.docs;
+      print(query.docs);
+      gc_update = true;
+      update();
+    } catch (e) {
+      Snacks().snack_failed('Problem in loading Hives', 'Something went wrong');
+    }
   }
 
   void GetGCDetails(String code) async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/controllers/gc_list_controller.dart';
+import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/pages/home.dart';
 import 'package:hive/screens/utils/snackbars/snacks.dart';
 import 'package:page_transition/page_transition.dart';
@@ -53,7 +54,7 @@ class JoinGC extends StatelessWidget {
         ),
       ),
       GestureDetector(
-        onTap: () {
+        onTap: () async {
           if (_join_gc_controller.text != '') {
             FocusScopeNode currentFocus = FocusScope.of(context);
 
@@ -61,17 +62,15 @@ class JoinGC extends StatelessWidget {
               currentFocus.unfocus();
             }
             Snacks().snack_wait();
-            Future.delayed(const Duration(seconds: 1), () async {
-              bool can_join_status =
-                  await GC_Controller.instance.joinGC(_join_gc_controller.text);
-              if (can_join_status != false) {
-                Navigator.pop(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.fade,
-                        child: Home(),
-                        duration: Duration(milliseconds: 600)));
-              }
+            Future.delayed(const Duration(seconds: 1), () {
+              GC_Controller.instance.joinGC(_join_gc_controller.text,
+                  UserController.instance.user['user_id']);
+              Navigator.pop(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.fade,
+                      child: Home(),
+                      duration: Duration(milliseconds: 600)));
             });
           }
         },
