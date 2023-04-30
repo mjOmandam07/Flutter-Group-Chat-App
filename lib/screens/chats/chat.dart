@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/controllers/chat_controller.dart';
 import 'package:hive/controllers/gc_list_controller.dart';
+import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/chats/gc_details.dart';
 import 'package:hive/screens/pages/home.dart';
 import 'package:page_transition/page_transition.dart';
@@ -24,14 +25,14 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     widget.gc_details;
     var group_chat_details = GC_Controller.instance.gc_details;
-
     double iconSize = MediaQuery.of(context).size.width;
     if (WidgetsBinding.instance.window.viewInsets.bottom != 0.0) {
       iconSize = 0;
     } else {
       iconSize = MediaQuery.of(context).size.width;
     }
-    Chat_Controller chat_controller = Get.put(Chat_Controller());
+    // Chat_Controller chat_controller = Get.put(Chat_Controller());
+    Chat_Controller.instance.getMessages(group_chat_details['code']);
     return Builder(builder: (context) {
       return Scaffold(
         backgroundColor: Color.fromRGBO(249, 243, 222, 1),
@@ -39,7 +40,8 @@ class _ChatState extends State<Chat> {
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
           backgroundColor: Colors.white,
           leading: IconButton(
-            onPressed: () {
+            onPressed: () async {
+              await Chat_Controller.instance.refreshMessages();
               Navigator.pop(
                   context,
                   PageTransition(
@@ -142,145 +144,201 @@ class _ChatState extends State<Chat> {
           },
           child: Container(
             child: GetBuilder<Chat_Controller>(builder: (_) {
-              return ListView.builder(
-                reverse: true,
-                padding: const EdgeInsets.all(0),
-                itemCount: chat_controller.chats.length,
-                itemBuilder: (context, index) {
-                  if (chat_controller.chats[index]['sender'] == 'Oswng') {
-                    return Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.05,
+              if (Chat_Controller.instance.chats == null) {
+                return Center(
+                    child: CircularProgressIndicator(
+                  backgroundColor: Color.fromRGBO(253, 197, 8, 1),
+                  color: Color.fromRGBO(21, 21, 21, 1),
+                ));
+              }
+              if (Chat_Controller.instance.chats.length == 0) {
+                return Column(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.05,
+                    ),
+                    Center(
+                      child: Text(
+                        'Welcome to',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Color.fromRGBO(253, 197, 8, 1),
+                            fontFamily: 'Montserrat',
+                            fontSize: 20),
+                      ),
+                    ),
+                    Text(
+                      '${group_chat_details['name']}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color.fromRGBO(253, 197, 8, 1),
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w900,
+                          fontSize: 30),
+                    ),
+                    Center(
+                      child: Text(
+                        'Start Buzzing Now',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Color.fromRGBO(253, 197, 8, 1),
+                            fontFamily: 'Montserrat',
+                            fontSize: 20),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return ListView.builder(
+                  reverse: true,
+                  padding: const EdgeInsets.all(0),
+                  itemCount: Chat_Controller.instance.chats.length,
+                  itemBuilder: (context, index) {
+                    if (Chat_Controller.instance.chats[index]['sender'] ==
+                        UserController.instance.user['user_id']) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.05,
+                                    ),
+                                    Text('You',
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 151, 151, 151),
+                                            fontSize: 15,
+                                            fontFamily: 'Montserrat-SemiBold'))
+                                  ],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      top: 5, left: 15, right: 15, bottom: 5),
+                                  padding: EdgeInsets.all(20),
+                                  // height: MediaQuery.of(context).size.height * 0.17,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.7,
+                                  child: Text(
+                                      '''${Chat_Controller.instance.chats[index]['message']}''',
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(68, 68, 68, 1),
+                                          fontSize: 15,
+                                          fontFamily: 'Montserrat')),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                      bottomRight: Radius.circular(0),
+                                      bottomLeft: Radius.circular(20),
+                                    ),
+                                    color: Color.fromRGBO(253, 197, 8, 1),
                                   ),
-                                  Text('You',
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 25),
+                                  child: Text(
+                                      Chat_Controller.instance.chats[index]
+                                          ['timestamp'],
                                       style: TextStyle(
                                           color: Color.fromARGB(
                                               255, 151, 151, 151),
                                           fontSize: 15,
-                                          fontFamily: 'Montserrat-SemiBold'))
-                                ],
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    top: 5, left: 15, right: 15, bottom: 5),
-                                padding: EdgeInsets.all(20),
-                                // height: MediaQuery.of(context).size.height * 0.17,
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                child: Text(
-                                    '''${chat_controller.chats[index]['msg_payload']}''',
-                                    textAlign: TextAlign.justify,
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(68, 68, 68, 1),
-                                        fontSize: 15,
-                                        fontFamily: 'Montserrat')),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                    bottomRight: Radius.circular(0),
-                                    bottomLeft: Radius.circular(20),
-                                  ),
-                                  color: Color.fromRGBO(253, 197, 8, 1),
+                                          fontFamily: 'Montserrat-SemiBold')),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.03,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.1,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/img/sample.jpg"),
+                                              fit: BoxFit.cover)),
+                                    ),
+                                    Text(
+                                        Chat_Controller.instance.chats[index]
+                                            ['sender'],
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 151, 151, 151),
+                                            fontSize: 15,
+                                            fontFamily: 'Montserrat-SemiBold'))
+                                  ],
                                 ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 25),
-                                child: Text(
-                                    chat_controller.chats[index]['datetime'],
-                                    style: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 151, 151, 151),
-                                        fontSize: 15,
-                                        fontFamily: 'Montserrat-SemiBold')),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    return Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 10),
-                                    height: MediaQuery.of(context).size.height *
-                                        0.03,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.1,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                "assets/img/sample.jpg"),
-                                            fit: BoxFit.cover)),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      top: 5, left: 15, right: 15, bottom: 5),
+                                  padding: EdgeInsets.all(20),
+                                  // height: MediaQuery.of(context).size.height * 0.17,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.7,
+                                  child: Text(
+                                      '''${Chat_Controller.instance.chats[index]['message']}''',
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15,
+                                          fontFamily: 'Montserrat')),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20),
+                                    ),
+                                    color: Colors.white,
                                   ),
-                                  Text(chat_controller.chats[index]['sender'],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 25),
+                                  child: Text(
+                                      Chat_Controller.instance.chats[index]
+                                          ['timestamp'],
                                       style: TextStyle(
                                           color: Color.fromARGB(
                                               255, 151, 151, 151),
                                           fontSize: 15,
-                                          fontFamily: 'Montserrat-SemiBold'))
-                                ],
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    top: 5, left: 15, right: 15, bottom: 5),
-                                padding: EdgeInsets.all(20),
-                                // height: MediaQuery.of(context).size.height * 0.17,
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                child: Text(
-                                    '''${chat_controller.chats[index]['msg_payload']}''',
-                                    textAlign: TextAlign.justify,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontFamily: 'Montserrat')),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(20),
-                                    bottomRight: Radius.circular(20),
-                                    bottomLeft: Radius.circular(20),
-                                  ),
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 25),
-                                child: Text(
-                                    chat_controller.chats[index]['datetime'],
-                                    style: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 151, 151, 151),
-                                        fontSize: 15,
-                                        fontFamily: 'Montserrat-SemiBold')),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                },
-              );
+                                          fontFamily: 'Montserrat-SemiBold')),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                );
+              }
             }),
           ),
         ),
@@ -350,7 +408,11 @@ class _ChatState extends State<Chat> {
                   onPressed: () {
                     // print(chatFieldController.text);
                     if (chatFieldController.text != '') {
-                      chat_controller.addNewMessage(chatFieldController.text);
+                      var user_id = UserController.instance.user['user_id'];
+                      var msg = chatFieldController.text;
+                      var code = group_chat_details['code'];
+                      Chat_Controller.instance
+                          .addNewMessage(user_id, msg, code);
                     }
                     FocusScopeNode currentFocus = FocusScope.of(context);
 

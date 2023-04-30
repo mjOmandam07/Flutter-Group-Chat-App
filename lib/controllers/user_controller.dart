@@ -7,8 +7,9 @@ class UserController extends GetxController {
       FirebaseFirestore.instance.collection('users');
 
   var user_details;
-
   get user => user_details;
+
+  var username;
 
   Future clear_current_user() async {
     user_details = null;
@@ -47,5 +48,15 @@ class UserController extends GetxController {
     var query = await _user_table.where("email", isEqualTo: email).get();
     user_details = query.docs[0];
     update();
+  }
+
+  String getUsernamebyUserid(user_id) {
+    var query =
+        _user_table.where("user_id", isEqualTo: user_id).get().then((value) {
+      username = value.docs[0]['username'];
+    });
+
+    print('from controller: ${username}');
+    return username;
   }
 }
