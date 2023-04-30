@@ -75,6 +75,20 @@ class GC_Controller extends GetxController {
     }
   }
 
+  Future leaveGC(gc, user_id) async {
+    try {
+      await _gc_table.doc(gc['code']).update({
+        "people": FieldValue.arrayRemove([user_id])
+      });
+      var gc_details_to_remove = {'code': gc['code'], 'name': gc['name']};
+      UserController.instance.removeUserfromGC(gc_details_to_remove, user_id);
+      Snacks().snack_success('Hive Left!', 'You left ${gc['name']}');
+    } catch (e) {
+      print(e.toString());
+      Snacks().snack_failed('Problem in leaving Hive', 'Something went wrong');
+    }
+  }
+
   void getUserGroupChats(user_id) async {
     try {
       var query = await _gc_table.where("people", arrayContains: user_id).get();

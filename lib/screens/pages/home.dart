@@ -83,7 +83,8 @@ class _HomeState extends State<Home> {
                     child: Text(
                       'Buzz off',
                       style: TextStyle(
-                          fontFamily: 'Montserrat', color: Colors.white),
+                          fontFamily: 'Montserrat-SemiBold',
+                          color: Colors.white),
                     )))
           ],
         );

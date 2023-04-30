@@ -36,6 +36,13 @@ class UserController extends GetxController {
     getUserByUserId(user_id);
   }
 
+  void removeUserfromGC(code, user_id) async {
+    await _user_table.doc(user_id).update({
+      "group_chats": FieldValue.arrayRemove([code])
+    });
+    getUserByUserId(user_id);
+  }
+
   Future getUserByEmail(String? email) async {
     var query = await _user_table.where("email", isEqualTo: email).get();
     user_details = query.docs[0];
