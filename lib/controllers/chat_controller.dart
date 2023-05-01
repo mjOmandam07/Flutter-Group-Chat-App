@@ -47,13 +47,11 @@ class Chat_Controller extends GetxController {
   }
 
   void getMessages(code) async {
-    var query =
-        _message_table.where("gc_code", isEqualTo: code).get().then((value) {
-      for (var docSnapshot in value.docs) {
-        var data = docSnapshot.data();
-      }
-    });
-    // _chats = query.docs;
+    var query = await _message_table
+        .where("gc_code", isEqualTo: code)
+        .orderBy('timestamp')
+        .get();
+    _chats = query.docs.reversed.toList();
     update();
   }
 }

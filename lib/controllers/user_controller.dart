@@ -10,6 +10,7 @@ class UserController extends GetxController {
   get user => user_details;
 
   var username;
+  // get sender => username;
 
   Future clear_current_user() async {
     user_details = null;
@@ -50,13 +51,9 @@ class UserController extends GetxController {
     update();
   }
 
-  String getUsernamebyUserid(user_id) {
-    var query =
-        _user_table.where("user_id", isEqualTo: user_id).get().then((value) {
-      username = value.docs[0]['username'];
-    });
-
-    print('from controller: ${username}');
+  Future getUsernamebyUserid(user_id) async {
+    var query = await _user_table.where("user_id", isEqualTo: user_id).get();
+    username = query.docs[0]['username'];
     return username;
   }
 }

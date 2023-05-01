@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/controllers/chat_controller.dart';
@@ -31,8 +32,8 @@ class _ChatState extends State<Chat> {
     } else {
       iconSize = MediaQuery.of(context).size.width;
     }
-    // Chat_Controller chat_controller = Get.put(Chat_Controller());
     Chat_Controller.instance.getMessages(group_chat_details['code']);
+    // Chat_Controller chat_controller = Get.put(Chat_Controller());
     return Builder(builder: (context) {
       return Scaffold(
         backgroundColor: Color.fromRGBO(249, 243, 222, 1),
@@ -286,14 +287,29 @@ class _ChatState extends State<Chat> {
                                                   "assets/img/sample.jpg"),
                                               fit: BoxFit.cover)),
                                     ),
-                                    Text(
-                                        Chat_Controller.instance.chats[index]
-                                            ['sender'],
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 151, 151, 151),
-                                            fontSize: 15,
-                                            fontFamily: 'Montserrat-SemiBold'))
+                                    FutureBuilder(
+                                        future: UserController.instance
+                                            .getUsernamebyUserid(Chat_Controller
+                                                .instance
+                                                .chats[index]['sender']),
+                                        builder: (_, snapshot) {
+                                          if (snapshot.data == null) {
+                                            return CircularProgressIndicator(
+                                              backgroundColor: Color.fromRGBO(
+                                                  171, 171, 171, 1),
+                                              color: Color.fromRGBO(
+                                                  138, 138, 138, 1),
+                                            );
+                                          } else {
+                                            return Text(snapshot.data,
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 151, 151, 151),
+                                                    fontSize: 15,
+                                                    fontFamily:
+                                                        'Montserrat-SemiBold'));
+                                          }
+                                        })
                                   ],
                                 ),
                                 Container(
