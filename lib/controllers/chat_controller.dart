@@ -28,13 +28,13 @@ class Chat_Controller extends GetxController {
 
   void addNewMessage(user_id, msg, code) async {
     try {
-      var timestamp = DateTime.now().microsecondsSinceEpoch;
+      var timestamp = Timestamp.now();
 
       Map<String, dynamic> newMsg = {
         'sender': user_id,
         'gc_code': code,
         'message': msg,
-        'timestamp': timestamp.toString(),
+        'timestamp': timestamp,
       };
 
       await _message_table

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,7 @@ import 'package:hive/controllers/gc_list_controller.dart';
 import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/chats/gc_details.dart';
 import 'package:hive/screens/pages/home.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 
 class Chat extends StatefulWidget {
@@ -21,7 +24,8 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
   var chatFieldController = TextEditingController();
-
+  var date = DateFormat("MMM, dd, yyyy");
+  var time = DateFormat("jm");
   @override
   Widget build(BuildContext context) {
     widget.gc_details;
@@ -249,8 +253,7 @@ class _ChatState extends State<Chat> {
                                 Container(
                                   margin: EdgeInsets.only(left: 25),
                                   child: Text(
-                                      Chat_Controller.instance.chats[index]
-                                          ['timestamp'],
+                                      '${date.format(Chat_Controller.instance.chats[index]['timestamp'].toDate())}   ${time.format(Chat_Controller.instance.chats[index]['timestamp'].toDate())}',
                                       style: TextStyle(
                                           color: Color.fromARGB(
                                               255, 151, 151, 151),
@@ -338,8 +341,7 @@ class _ChatState extends State<Chat> {
                                 Container(
                                   margin: EdgeInsets.only(left: 25),
                                   child: Text(
-                                      Chat_Controller.instance.chats[index]
-                                          ['timestamp'],
+                                      '${date.format(Chat_Controller.instance.chats[index]['timestamp'].toDate())}   ${time.format(Chat_Controller.instance.chats[index]['timestamp'].toDate())}',
                                       style: TextStyle(
                                           color: Color.fromARGB(
                                               255, 151, 151, 151),
