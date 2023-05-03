@@ -8,6 +8,7 @@ import 'package:hive/controllers/gc_list_controller.dart';
 import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/chats/gc_details.dart';
 import 'package:hive/screens/pages/home.dart';
+import 'package:hive/screens/utils/snackbars/snacks.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -24,8 +25,8 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
   var chatFieldController = TextEditingController();
-  var date = DateFormat("MMM, dd, yyyy");
-  var time = DateFormat("jm");
+  var datetime = DateFormat.yMMMd().add_jm();
+
   @override
   Widget build(BuildContext context) {
     widget.gc_details;
@@ -148,217 +149,263 @@ class _ChatState extends State<Chat> {
             }
           },
           child: Container(
-            child: GetBuilder<Chat_Controller>(builder: (_) {
-              if (Chat_Controller.instance.chats == null) {
-                return Center(
-                    child: CircularProgressIndicator(
-                  backgroundColor: Color.fromRGBO(253, 197, 8, 1),
-                  color: Color.fromRGBO(21, 21, 21, 1),
-                ));
-              }
-              if (Chat_Controller.instance.chats.length == 0) {
-                return Column(
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    Center(
-                      child: Text(
-                        'Welcome to',
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: Chat_Controller.instance.message_table
+                      .orderBy('timestamp', descending: true)
+                      .where("gc_code", isEqualTo: group_chat_details['code'])
+                      .snapshots(),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasError) {
+                      Snacks().snack_failed(
+                          'Loading of messages failed', 'Something went wrong');
+                      print('ERROR' + snapshot.error.toString());
+                      return Text(
+                        'Something went wrong',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Color.fromRGBO(253, 197, 8, 1),
                             fontFamily: 'Montserrat',
                             fontSize: 20),
-                      ),
-                    ),
-                    Text(
-                      '${group_chat_details['name']}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color.fromRGBO(253, 197, 8, 1),
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w900,
-                          fontSize: 30),
-                    ),
-                    Center(
-                      child: Text(
-                        'Start Buzzing Now',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color.fromRGBO(253, 197, 8, 1),
-                            fontFamily: 'Montserrat',
-                            fontSize: 20),
-                      ),
-                    ),
-                  ],
-                );
-              } else {
-                return ListView.builder(
-                  reverse: true,
-                  padding: const EdgeInsets.all(0),
-                  itemCount: Chat_Controller.instance.chats.length,
-                  itemBuilder: (context, index) {
-                    if (Chat_Controller.instance.chats[index]['sender'] ==
-                        UserController.instance.user['user_id']) {
-                      return Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.05,
-                                    ),
-                                    Text('You',
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 151, 151, 151),
-                                            fontSize: 15,
-                                            fontFamily: 'Montserrat-SemiBold'))
-                                  ],
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      top: 5, left: 15, right: 15, bottom: 5),
-                                  padding: EdgeInsets.all(20),
-                                  // height: MediaQuery.of(context).size.height * 0.17,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  child: Text(
-                                      '''${Chat_Controller.instance.chats[index]['message']}''',
-                                      textAlign: TextAlign.justify,
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(68, 68, 68, 1),
-                                          fontSize: 15,
-                                          fontFamily: 'Montserrat')),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                      bottomRight: Radius.circular(0),
-                                      bottomLeft: Radius.circular(20),
-                                    ),
-                                    color: Color.fromRGBO(253, 197, 8, 1),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 25),
-                                  child: Text(
-                                      '${date.format(Chat_Controller.instance.chats[index]['timestamp'].toDate())}   ${time.format(Chat_Controller.instance.chats[index]['timestamp'].toDate())}',
-                                      style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 151, 151, 151),
-                                          fontSize: 15,
-                                          fontFamily: 'Montserrat-SemiBold')),
-                                )
-                              ],
-                            ),
-                          ],
+                      );
+                    }
+
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Color.fromRGBO(253, 197, 8, 1),
+                          color: Color.fromRGBO(3, 3, 3, 1),
                         ),
                       );
                     } else {
-                      return Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
+                      if (snapshot.data!.docs.length == 0) {
+                        return Column(
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.05,
+                            ),
+                            Center(
+                              child: Text(
+                                'Welcome to',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(253, 197, 8, 1),
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 20),
+                              ),
+                            ),
+                            Text(
+                              '${group_chat_details['name']}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color.fromRGBO(253, 197, 8, 1),
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 30),
+                            ),
+                            Center(
+                              child: Text(
+                                'Start Buzzing Now',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(253, 197, 8, 1),
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 20),
+                              ),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return ListView.builder(
+                          reverse: true,
+                          padding: const EdgeInsets.all(0),
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot doc = snapshot.data?.docs[index];
+
+                            if (doc['sender'] ==
+                                UserController.instance.user['user_id']) {
+                              return Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(left: 10),
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.03,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.1,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  "assets/img/sample.jpg"),
-                                              fit: BoxFit.cover)),
-                                    ),
-                                    FutureBuilder(
-                                        future: UserController.instance
-                                            .getUsernamebyUserid(Chat_Controller
-                                                .instance
-                                                .chats[index]['sender']),
-                                        builder: (_, snapshot) {
-                                          if (snapshot.data == null) {
-                                            return CircularProgressIndicator(
-                                              backgroundColor: Color.fromRGBO(
-                                                  171, 171, 171, 1),
-                                              color: Color.fromRGBO(
-                                                  138, 138, 138, 1),
-                                            );
-                                          } else {
-                                            return Text(snapshot.data,
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.05,
+                                            ),
+                                            Text('You',
                                                 style: TextStyle(
                                                     color: Color.fromARGB(
                                                         255, 151, 151, 151),
                                                     fontSize: 15,
                                                     fontFamily:
-                                                        'Montserrat-SemiBold'));
-                                          }
-                                        })
+                                                        'Montserrat-SemiBold'))
+                                          ],
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              top: 5,
+                                              left: 15,
+                                              right: 15,
+                                              bottom: 5),
+                                          padding: EdgeInsets.all(20),
+                                          // height: MediaQuery.of(context).size.height * 0.17,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.7,
+                                          child: Text('''${doc['message']}''',
+                                              textAlign: TextAlign.justify,
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      68, 68, 68, 1),
+                                                  fontSize: 15,
+                                                  fontFamily: 'Montserrat')),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(20),
+                                              topRight: Radius.circular(20),
+                                              bottomRight: Radius.circular(0),
+                                              bottomLeft: Radius.circular(20),
+                                            ),
+                                            color:
+                                                Color.fromRGBO(253, 197, 8, 1),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 25),
+                                          child: Text(
+                                              '${datetime.format(doc['timestamp'].toDate())}',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 151, 151, 151),
+                                                  fontSize: 15,
+                                                  fontFamily:
+                                                      'Montserrat-SemiBold')),
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      top: 5, left: 15, right: 15, bottom: 5),
-                                  padding: EdgeInsets.all(20),
-                                  // height: MediaQuery.of(context).size.height * 0.17,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  child: Text(
-                                      '''${Chat_Controller.instance.chats[index]['message']}''',
-                                      textAlign: TextAlign.justify,
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontFamily: 'Montserrat')),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(20),
-                                      bottomRight: Radius.circular(20),
-                                      bottomLeft: Radius.circular(20),
+                              );
+                            } else {
+                              return Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(left: 10),
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.03,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.1,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          "assets/img/sample.jpg"),
+                                                      fit: BoxFit.cover)),
+                                            ),
+                                            FutureBuilder(
+                                                future: UserController.instance
+                                                    .getUsernamebyUserid(
+                                                        doc['sender']),
+                                                builder: (_, snapshot) {
+                                                  if (snapshot.data == null) {
+                                                    return CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Color.fromRGBO(
+                                                              171, 171, 171, 1),
+                                                      color: Color.fromRGBO(
+                                                          138, 138, 138, 1),
+                                                    );
+                                                  } else {
+                                                    return Text(snapshot.data,
+                                                        style: TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    151,
+                                                                    151,
+                                                                    151),
+                                                            fontSize: 15,
+                                                            fontFamily:
+                                                                'Montserrat-SemiBold'));
+                                                  }
+                                                })
+                                          ],
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              top: 5,
+                                              left: 15,
+                                              right: 15,
+                                              bottom: 5),
+                                          padding: EdgeInsets.all(20),
+                                          // height: MediaQuery.of(context).size.height * 0.17,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.7,
+                                          child: Text('''${doc['message']}''',
+                                              textAlign: TextAlign.justify,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                  fontFamily: 'Montserrat')),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(20),
+                                              bottomRight: Radius.circular(20),
+                                              bottomLeft: Radius.circular(20),
+                                            ),
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 25),
+                                          child: Text(
+                                              '${datetime.format(doc['timestamp'].toDate())}',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 151, 151, 151),
+                                                  fontSize: 15,
+                                                  fontFamily:
+                                                      'Montserrat-SemiBold')),
+                                        )
+                                      ],
                                     ),
-                                    color: Colors.white,
-                                  ),
+                                  ],
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 25),
-                                  child: Text(
-                                      '${date.format(Chat_Controller.instance.chats[index]['timestamp'].toDate())}   ${time.format(Chat_Controller.instance.chats[index]['timestamp'].toDate())}',
-                                      style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 151, 151, 151),
-                                          fontSize: 15,
-                                          fontFamily: 'Montserrat-SemiBold')),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
+                              );
+                            }
+                          },
+                        );
+                      }
                     }
-                  },
-                );
-              }
-            }),
-          ),
+                  })),
         ),
         bottomNavigationBar: Padding(
           padding:

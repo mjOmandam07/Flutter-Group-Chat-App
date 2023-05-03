@@ -7,18 +7,10 @@ class Chat_Controller extends GetxController {
   static Chat_Controller instance = Get.find();
   CollectionReference _message_table =
       FirebaseFirestore.instance.collection('messages');
-  var _chats;
-  // {
-  //   'sender': 'Oswng',
-  //   'msg_payload': 'Hi its me Oswng!',
-  //   'datetime': '8:42 AM 4/22/23'
-  // },
-  // {
-  //   'sender': 'John',
-  //   'msg_payload': 'Latest Message!, Hi its me John!',
-  //   'datetime': '8:44 AM 4/22/23'
-  // }
 
+  get message_table => _message_table;
+
+  var _chats;
   get chats => _chats;
 
   Future refreshMessages() async {
@@ -28,7 +20,7 @@ class Chat_Controller extends GetxController {
 
   void addNewMessage(user_id, msg, code) async {
     try {
-      var timestamp = Timestamp.now();
+      var timestamp = FieldValue.serverTimestamp();
 
       Map<String, dynamic> newMsg = {
         'sender': user_id,
