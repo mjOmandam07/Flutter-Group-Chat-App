@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:hive/controllers/user_controller.dart';
+import 'package:hive/screens/utils/functions/random_char.dart';
 import 'package:hive/screens/utils/snackbars/snacks.dart';
 
 class Chat_Controller extends GetxController {
@@ -21,6 +22,10 @@ class Chat_Controller extends GetxController {
   void addNewMessage(user_id, msg, code) async {
     try {
       var timestamp = FieldValue.serverTimestamp();
+      var tstamp_local =
+          '[${DateTime.now().microsecondsSinceEpoch.toString()} timezone: ${DateTime.now().timeZoneName}]';
+
+      String unique_code = generateCode(5);
 
       Map<String, dynamic> newMsg = {
         'sender': user_id,
@@ -29,9 +34,7 @@ class Chat_Controller extends GetxController {
         'timestamp': timestamp,
       };
 
-      await _message_table
-          .doc('${user_id}-${timestamp.toString()}')
-          .set(newMsg);
+      await _message_table.doc('${user_id}-${tstamp_local}').set(newMsg);
       getMessages(code);
     } catch (e) {
       Snacks().snack_failed('Message Send Failed', 'Something went wrong');

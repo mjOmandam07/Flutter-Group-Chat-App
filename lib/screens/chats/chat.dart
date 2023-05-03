@@ -282,17 +282,29 @@ class _ChatState extends State<Chat> {
                                                 Color.fromRGBO(253, 197, 8, 1),
                                           ),
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(left: 25),
-                                          child: Text(
-                                              '${datetime.format(doc['timestamp'].toDate())}',
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 151, 151, 151),
-                                                  fontSize: 15,
-                                                  fontFamily:
-                                                      'Montserrat-SemiBold')),
-                                        )
+                                        if (doc['timestamp'] == null)
+                                          Container(
+                                            height: 7,
+                                            width: 7,
+                                            child: CircularProgressIndicator(
+                                              backgroundColor: Color.fromRGBO(
+                                                  253, 197, 8, 1),
+                                              color: Color.fromRGBO(
+                                                  145, 141, 141, 1),
+                                            ),
+                                          )
+                                        else
+                                          Container(
+                                            margin: EdgeInsets.only(left: 25),
+                                            child: Text(
+                                                '${datetime.format(doc['timestamp'].toDate())}',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 151, 151, 151),
+                                                    fontSize: 15,
+                                                    fontFamily:
+                                                        'Montserrat-SemiBold')),
+                                          )
                                       ],
                                     ),
                                   ],
@@ -384,17 +396,28 @@ class _ChatState extends State<Chat> {
                                             color: Colors.white,
                                           ),
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(left: 25),
-                                          child: Text(
-                                              '${datetime.format(doc['timestamp'].toDate())}',
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 151, 151, 151),
-                                                  fontSize: 15,
-                                                  fontFamily:
-                                                      'Montserrat-SemiBold')),
-                                        )
+                                        if (doc['timestamp'] == null)
+                                          Container(
+                                            height: 7,
+                                            width: 7,
+                                            child: CircularProgressIndicator(
+                                              backgroundColor: Color.fromRGBO(
+                                                  253, 197, 8, 1),
+                                              color: Color.fromRGBO(3, 3, 3, 1),
+                                            ),
+                                          )
+                                        else
+                                          Container(
+                                            margin: EdgeInsets.only(left: 25),
+                                            child: Text(
+                                                '${datetime.format(doc['timestamp'].toDate())}',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 151, 151, 151),
+                                                    fontSize: 15,
+                                                    fontFamily:
+                                                        'Montserrat-SemiBold')),
+                                          )
                                       ],
                                     ),
                                   ],
