@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/controllers/chat_controller.dart';
 import 'package:hive/controllers/gc_list_controller.dart';
+import 'package:hive/controllers/image_controller.dart';
 import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/chats/gc_details.dart';
 import 'package:hive/screens/pages/home.dart';
@@ -224,205 +225,441 @@ class _ChatState extends State<Chat> {
 
                             if (doc['sender'] ==
                                 UserController.instance.user['user_id']) {
-                              return Container(
-                                margin: EdgeInsets.symmetric(vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.05,
-                                            ),
-                                            Text('You',
-                                                style: TextStyle(
-                                                    color: Color.fromARGB(
-                                                        255, 151, 151, 151),
-                                                    fontSize: 15,
-                                                    fontFamily:
-                                                        'Montserrat-SemiBold'))
-                                          ],
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              top: 5,
-                                              left: 15,
-                                              right: 15,
-                                              bottom: 5),
-                                          padding: EdgeInsets.all(20),
-                                          // height: MediaQuery.of(context).size.height * 0.17,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.7,
-                                          child: Text('''${doc['message']}''',
-                                              textAlign: TextAlign.justify,
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      68, 68, 68, 1),
-                                                  fontSize: 15,
-                                                  fontFamily: 'Montserrat')),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20),
-                                              bottomRight: Radius.circular(0),
-                                              bottomLeft: Radius.circular(20),
-                                            ),
-                                            color:
-                                                Color.fromRGBO(253, 197, 8, 1),
+                              if (doc['type'] == 'image') {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.05,
+                                              ),
+                                              Text('You',
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 151, 151, 151),
+                                                      fontSize: 15,
+                                                      fontFamily:
+                                                          'Montserrat-SemiBold'))
+                                            ],
                                           ),
-                                        ),
-                                        if (doc['timestamp'] == null)
                                           Container(
-                                            height: 7,
-                                            width: 7,
-                                            child: CircularProgressIndicator(
-                                              backgroundColor: Color.fromRGBO(
-                                                  253, 197, 8, 1),
-                                              color: Color.fromRGBO(
-                                                  145, 141, 141, 1),
-                                            ),
-                                          )
-                                        else
-                                          Container(
-                                            margin: EdgeInsets.only(left: 25),
-                                            child: Text(
-                                                '${datetime.format(doc['timestamp'].toDate())}',
-                                                style: TextStyle(
-                                                    color: Color.fromARGB(
-                                                        255, 151, 151, 151),
-                                                    fontSize: 15,
-                                                    fontFamily:
-                                                        'Montserrat-SemiBold')),
-                                          )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return Container(
-                                margin: EdgeInsets.symmetric(vertical: 10),
-                                child: Row(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(left: 10),
+                                            margin: EdgeInsets.only(
+                                                top: 5,
+                                                left: 15,
+                                                right: 15,
+                                                bottom: 5),
+                                            padding: EdgeInsets.all(20),
+                                            // height: MediaQuery.of(context)
+                                            //         .size
+                                            //         .height *
+                                            //     0.5,
+                                            // width: MediaQuery.of(context)
+                                            //         .size
+                                            //         .width *
+                                            //     0.5,
+                                            child: Container(
+                                              margin: EdgeInsets.all(1),
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.03,
+                                                  0.4,
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.1,
+                                                  0.5,
                                               decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          "assets/img/sample.jpg"),
-                                                      fit: BoxFit.cover)),
-                                            ),
-                                            FutureBuilder(
-                                                future: UserController.instance
-                                                    .getUsernamebyUserid(
-                                                        doc['sender']),
-                                                builder: (_, snapshot) {
-                                                  if (snapshot.data == null) {
-                                                    return CircularProgressIndicator(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: doc['message'] != ""
+                                                  ? Image.network(
+                                                      doc['message'])
+                                                  : CircularProgressIndicator(
                                                       backgroundColor:
                                                           Color.fromRGBO(
-                                                              171, 171, 171, 1),
+                                                              255, 255, 255, 1),
                                                       color: Color.fromRGBO(
-                                                          138, 138, 138, 1),
-                                                    );
-                                                  } else {
-                                                    return Text(snapshot.data,
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    151,
-                                                                    151,
-                                                                    151),
-                                                            fontSize: 15,
-                                                            fontFamily:
-                                                                'Montserrat-SemiBold'));
-                                                  }
-                                                })
-                                          ],
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                              top: 5,
-                                              left: 15,
-                                              right: 15,
-                                              bottom: 5),
-                                          padding: EdgeInsets.all(20),
-                                          // height: MediaQuery.of(context).size.height * 0.17,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.7,
-                                          child: Text('''${doc['message']}''',
-                                              textAlign: TextAlign.justify,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                  fontFamily: 'Montserrat')),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(20),
-                                              bottomRight: Radius.circular(20),
-                                              bottomLeft: Radius.circular(20),
+                                                          145, 141, 141, 1),
+                                                    ),
                                             ),
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        if (doc['timestamp'] == null)
-                                          Container(
-                                            height: 7,
-                                            width: 7,
-                                            child: CircularProgressIndicator(
-                                              backgroundColor: Color.fromRGBO(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20),
+                                                bottomRight: Radius.circular(0),
+                                                bottomLeft: Radius.circular(20),
+                                              ),
+                                              color: Color.fromRGBO(
                                                   253, 197, 8, 1),
-                                              color: Color.fromRGBO(3, 3, 3, 1),
                                             ),
-                                          )
-                                        else
+                                          ),
+                                          if (doc['timestamp'] == null)
+                                            Container(
+                                              height: 7,
+                                              width: 7,
+                                              child: CircularProgressIndicator(
+                                                backgroundColor: Color.fromRGBO(
+                                                    253, 197, 8, 1),
+                                                color: Color.fromRGBO(
+                                                    145, 141, 141, 1),
+                                              ),
+                                            )
+                                          else
+                                            Container(
+                                              margin: EdgeInsets.only(left: 25),
+                                              child: Text(
+                                                  '${datetime.format(doc['timestamp'].toDate())}',
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 151, 151, 151),
+                                                      fontSize: 15,
+                                                      fontFamily:
+                                                          'Montserrat-SemiBold')),
+                                            )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.05,
+                                              ),
+                                              Text('You',
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 151, 151, 151),
+                                                      fontSize: 15,
+                                                      fontFamily:
+                                                          'Montserrat-SemiBold'))
+                                            ],
+                                          ),
                                           Container(
-                                            margin: EdgeInsets.only(left: 25),
-                                            child: Text(
-                                                '${datetime.format(doc['timestamp'].toDate())}',
+                                            margin: EdgeInsets.only(
+                                                top: 5,
+                                                left: 15,
+                                                right: 15,
+                                                bottom: 5),
+                                            padding: EdgeInsets.all(20),
+                                            // height: MediaQuery.of(context).size.height * 0.17,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.7,
+                                            child: Text('''${doc['message']}''',
+                                                textAlign: TextAlign.justify,
                                                 style: TextStyle(
-                                                    color: Color.fromARGB(
-                                                        255, 151, 151, 151),
+                                                    color: Color.fromRGBO(
+                                                        68, 68, 68, 1),
                                                     fontSize: 15,
-                                                    fontFamily:
-                                                        'Montserrat-SemiBold')),
-                                          )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
+                                                    fontFamily: 'Montserrat')),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20),
+                                                bottomRight: Radius.circular(0),
+                                                bottomLeft: Radius.circular(20),
+                                              ),
+                                              color: Color.fromRGBO(
+                                                  253, 197, 8, 1),
+                                            ),
+                                          ),
+                                          if (doc['timestamp'] == null)
+                                            Container(
+                                              height: 7,
+                                              width: 7,
+                                              child: CircularProgressIndicator(
+                                                backgroundColor: Color.fromRGBO(
+                                                    253, 197, 8, 1),
+                                                color: Color.fromRGBO(
+                                                    145, 141, 141, 1),
+                                              ),
+                                            )
+                                          else
+                                            Container(
+                                              margin: EdgeInsets.only(left: 25),
+                                              child: Text(
+                                                  '${datetime.format(doc['timestamp'].toDate())}',
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 151, 151, 151),
+                                                      fontSize: 15,
+                                                      fontFamily:
+                                                          'Montserrat-SemiBold')),
+                                            )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            } else {
+                              if (doc['type'] == 'image') {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 10),
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.03,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.1,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            "assets/img/sample.jpg"),
+                                                        fit: BoxFit.cover)),
+                                              ),
+                                              FutureBuilder(
+                                                  future: UserController
+                                                      .instance
+                                                      .getUsernamebyUserid(
+                                                          doc['sender']),
+                                                  builder: (_, snapshot) {
+                                                    if (snapshot.data == null) {
+                                                      return CircularProgressIndicator(
+                                                        backgroundColor:
+                                                            Color.fromRGBO(171,
+                                                                171, 171, 1),
+                                                        color: Color.fromRGBO(
+                                                            138, 138, 138, 1),
+                                                      );
+                                                    } else {
+                                                      return Text(snapshot.data,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      151,
+                                                                      151,
+                                                                      151),
+                                                              fontSize: 15,
+                                                              fontFamily:
+                                                                  'Montserrat-SemiBold'));
+                                                    }
+                                                  })
+                                            ],
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                top: 5,
+                                                left: 15,
+                                                right: 15,
+                                                bottom: 5),
+                                            padding: EdgeInsets.all(20),
+                                            // height: MediaQuery.of(context).size.height * 0.17,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.7,
+                                            child: doc['message'] != ""
+                                                ? Image.network(doc['message'])
+                                                : CircularProgressIndicator(
+                                                    backgroundColor:
+                                                        Color.fromRGBO(
+                                                            255, 255, 255, 1),
+                                                    color: Color.fromRGBO(
+                                                        145, 141, 141, 1),
+                                                  ),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(20),
+                                                bottomRight:
+                                                    Radius.circular(20),
+                                                bottomLeft: Radius.circular(20),
+                                              ),
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          if (doc['timestamp'] == null)
+                                            Container(
+                                              height: 7,
+                                              width: 7,
+                                              child: CircularProgressIndicator(
+                                                backgroundColor: Color.fromRGBO(
+                                                    253, 197, 8, 1),
+                                                color:
+                                                    Color.fromRGBO(3, 3, 3, 1),
+                                              ),
+                                            )
+                                          else
+                                            Container(
+                                              margin: EdgeInsets.only(left: 25),
+                                              child: Text(
+                                                  '${datetime.format(doc['timestamp'].toDate())}',
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 151, 151, 151),
+                                                      fontSize: 15,
+                                                      fontFamily:
+                                                          'Montserrat-SemiBold')),
+                                            )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 10),
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.03,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.1,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            "assets/img/sample.jpg"),
+                                                        fit: BoxFit.cover)),
+                                              ),
+                                              FutureBuilder(
+                                                  future: UserController
+                                                      .instance
+                                                      .getUsernamebyUserid(
+                                                          doc['sender']),
+                                                  builder: (_, snapshot) {
+                                                    if (snapshot.data == null) {
+                                                      return CircularProgressIndicator(
+                                                        backgroundColor:
+                                                            Color.fromRGBO(171,
+                                                                171, 171, 1),
+                                                        color: Color.fromRGBO(
+                                                            138, 138, 138, 1),
+                                                      );
+                                                    } else {
+                                                      return Text(snapshot.data,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      151,
+                                                                      151,
+                                                                      151),
+                                                              fontSize: 15,
+                                                              fontFamily:
+                                                                  'Montserrat-SemiBold'));
+                                                    }
+                                                  })
+                                            ],
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                top: 5,
+                                                left: 15,
+                                                right: 15,
+                                                bottom: 5),
+                                            padding: EdgeInsets.all(20),
+                                            // height: MediaQuery.of(context).size.height * 0.17,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.7,
+                                            child: Text('''${doc['message']}''',
+                                                textAlign: TextAlign.justify,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontFamily: 'Montserrat')),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(20),
+                                                bottomRight:
+                                                    Radius.circular(20),
+                                                bottomLeft: Radius.circular(20),
+                                              ),
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          if (doc['timestamp'] == null)
+                                            Container(
+                                              height: 7,
+                                              width: 7,
+                                              child: CircularProgressIndicator(
+                                                backgroundColor: Color.fromRGBO(
+                                                    253, 197, 8, 1),
+                                                color:
+                                                    Color.fromRGBO(3, 3, 3, 1),
+                                              ),
+                                            )
+                                          else
+                                            Container(
+                                              margin: EdgeInsets.only(left: 25),
+                                              child: Text(
+                                                  '${datetime.format(doc['timestamp'].toDate())}',
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 151, 151, 151),
+                                                      fontSize: 15,
+                                                      fontFamily:
+                                                          'Montserrat-SemiBold')),
+                                            )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
                             }
                           },
                         );
@@ -446,7 +683,18 @@ class _ChatState extends State<Chat> {
                   child: Row(
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await ImageController.instance.getCameraImage();
+                          await ImageController.instance.uploadImage();
+                          var imageUrl =
+                              await ImageController.instance.imageDownloadURL;
+                          var user_id = UserController.instance.user['user_id'];
+                          var msg = imageUrl;
+                          var code = group_chat_details['code'];
+                          var msg_type = 'image';
+                          Chat_Controller.instance
+                              .addNewMessage(user_id, msg, code, msg_type);
+                        },
                         icon: Icon(
                           Icons.camera_alt,
                           size: 30,
@@ -454,7 +702,19 @@ class _ChatState extends State<Chat> {
                         color: Color.fromRGBO(253, 197, 8, 1),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await ImageController.instance.getGalleryImage();
+                          await ImageController.instance.uploadImage();
+                          var imageUrl =
+                              await ImageController.instance.imageDownloadURL;
+
+                          var user_id = UserController.instance.user['user_id'];
+                          var msg = imageUrl;
+                          var code = group_chat_details['code'];
+                          var msg_type = 'image';
+                          Chat_Controller.instance
+                              .addNewMessage(user_id, msg, code, msg_type);
+                        },
                         icon: Icon(
                           Icons.photo,
                           size: 30,
@@ -499,8 +759,9 @@ class _ChatState extends State<Chat> {
                       var user_id = UserController.instance.user['user_id'];
                       var msg = chatFieldController.text;
                       var code = group_chat_details['code'];
+                      var msg_type = 'text';
                       Chat_Controller.instance
-                          .addNewMessage(user_id, msg, code);
+                          .addNewMessage(user_id, msg, code, msg_type);
                     }
                     FocusScopeNode currentFocus = FocusScope.of(context);
 

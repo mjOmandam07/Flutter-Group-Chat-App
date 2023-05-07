@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive/controllers/chat_controller.dart';
 import 'package:hive/controllers/gc_list_controller.dart';
+import 'package:hive/controllers/image_controller.dart';
 import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/entry/login.dart';
 import 'package:hive/screens/entry/register.dart';
@@ -17,6 +18,7 @@ class AuthController extends GetxController {
   UserController userController = Get.put(UserController());
   GC_Controller gcController = Get.put(GC_Controller());
   Chat_Controller chat_controller = Get.put(Chat_Controller());
+  ImageController imageController = Get.put(ImageController());
 
   @override
   void onReady() {

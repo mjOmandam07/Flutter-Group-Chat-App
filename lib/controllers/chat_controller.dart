@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:get/get.dart';
-import 'package:hive/controllers/user_controller.dart';
+
 import 'package:hive/screens/utils/functions/random_char.dart';
 import 'package:hive/screens/utils/snackbars/snacks.dart';
 
@@ -19,7 +20,7 @@ class Chat_Controller extends GetxController {
     update();
   }
 
-  void addNewMessage(user_id, msg, code) async {
+  void addNewMessage(user_id, msg, code, msg_type) async {
     try {
       var timestamp = FieldValue.serverTimestamp();
       var tstamp_local =
@@ -30,6 +31,7 @@ class Chat_Controller extends GetxController {
       Map<String, dynamic> newMsg = {
         'sender': user_id,
         'gc_code': code,
+        'type': msg_type,
         'message': msg,
         'timestamp': timestamp,
       };

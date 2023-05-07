@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.hive.app-mergeDebugResources-13:/values-pa/values-pa.xml",
+            "outputFile": "com.example.hive.app-mergeDebugResources-20:/values-pa/values-pa.xml",
             "map": [
                 {
                     "source": "C:\\Users\\markj\\.gradle\\caches\\transforms-3\\392643a040d0a7ef9b2ed4537c4719d5\\transformed\\browser-1.4.0\\res\\values-pa\\values-pa.xml",
@@ -55,7 +55,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\markj\\.gradle\\caches\\transforms-3\\4ca28c4a71705f8a687c69dda140a277\\transformed\\core-1.6.0\\res\\values-pa\\values-pa.xml",
+                    "source": "C:\\Users\\markj\\.gradle\\caches\\transforms-3\\5f80b20db3afa86c72a9766b008d752d\\transformed\\core-1.9.0\\res\\values-pa\\values-pa.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
