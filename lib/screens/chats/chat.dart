@@ -81,36 +81,15 @@ class _ChatState extends State<Chat> {
                       fontSize: 25),
                 ),
               ),
-              Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.green[700],
-                        borderRadius: BorderRadius.circular(30)),
-                    height: MediaQuery.of(context).size.height * 0.014,
-                    width: MediaQuery.of(context).size.width * 0.03,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.02,
-                  ),
-                  Text(
-                    '9 Active',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Montserrat',
-                        fontSize: 15),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.03,
-                  ),
-                  Text(
-                    '${group_chat_details['people'].length.toString()} People',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Montserrat',
-                        fontSize: 15),
-                  ),
-                ],
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.03,
+              ),
+              Text(
+                '${group_chat_details['people'].length.toString()} People',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Montserrat',
+                    fontSize: 15),
               ),
             ],
           ),
@@ -119,27 +98,6 @@ class _ChatState extends State<Chat> {
                 bottomRight: Radius.circular(25),
                 bottomLeft: Radius.circular(25)),
           ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.video_call_rounded,
-                size: 35,
-              ),
-              color: Color.fromRGBO(253, 197, 8, 1),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.04,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.call_outlined,
-                size: 25,
-              ),
-              color: Color.fromRGBO(253, 197, 8, 1),
-            ),
-          ],
         ),
         body: GestureDetector(
           onTap: () {
