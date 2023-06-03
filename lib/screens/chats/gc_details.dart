@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/controllers/auth_controller.dart';
+import 'package:hive/controllers/connection_controller.dart';
 import 'package:hive/controllers/gc_list_controller.dart';
 import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/chats/chat.dart';
@@ -88,7 +89,7 @@ class _GC_DetailsState extends State<GC_Details> {
   Widget build(BuildContext context) {
     var codeController = TextEditingController();
     var snack = Snacks();
-
+    ConnectionController.instance.checkRealtimeConnection();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

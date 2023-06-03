@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/controllers/chat_controller.dart';
+import 'package:hive/controllers/connection_controller.dart';
 import 'package:hive/controllers/gc_list_controller.dart';
 import 'package:hive/controllers/image_controller.dart';
 import 'package:hive/controllers/user_controller.dart';
@@ -30,6 +31,7 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
+    ConnectionController.instance.checkRealtimeConnection();
     widget.gc_details;
     var group_chat_details = GC_Controller.instance.gc_details;
     double iconSize = MediaQuery.of(context).size.width;

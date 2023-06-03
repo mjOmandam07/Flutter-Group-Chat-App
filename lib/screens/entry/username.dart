@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:hive/controllers/auth_controller.dart';
+import 'package:hive/controllers/connection_controller.dart';
 import 'package:hive/screens/pages/home.dart';
 import 'package:hive/screens/utils/screens/loading_screen.dart';
 import 'dart:math';
@@ -22,6 +23,7 @@ class _UsernameState extends State<Username> {
   @override
   Widget build(BuildContext context) {
     var user_details = widget.user_details;
+    ConnectionController.instance.checkRealtimeConnection();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,

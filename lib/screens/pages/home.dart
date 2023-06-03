@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/controllers/auth_controller.dart';
 import 'package:hive/controllers/chat_controller.dart';
+import 'package:hive/controllers/connection_controller.dart';
 import 'package:hive/controllers/gc_list_controller.dart';
 import 'package:hive/controllers/user_controller.dart';
 import 'package:hive/screens/chats/chat.dart';
@@ -95,6 +96,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    ConnectionController.instance.checkRealtimeConnection();
     return Scaffold(
       key: _key,
       resizeToAvoidBottomInset: false,

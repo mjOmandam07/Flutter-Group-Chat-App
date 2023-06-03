@@ -16,8 +16,8 @@
 15-->D:\Flutter Projs\hive\android\app\src\debug\AndroidManifest.xml:7:5-66
 15-->D:\Flutter Projs\hive\android\app\src\debug\AndroidManifest.xml:7:22-64
 16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-16-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\markj\.gradle\caches\transforms-3\58e5e05b4b803d2f200c44bd64fbdce6\transformed\jetified-firebase-auth-21.3.0\AndroidManifest.xml:26:5-79
-16-->[com.google.firebase:firebase-auth:21.3.0] C:\Users\markj\.gradle\caches\transforms-3\58e5e05b4b803d2f200c44bd64fbdce6\transformed\jetified-firebase-auth-21.3.0\AndroidManifest.xml:26:22-76
+16-->[:connectivity_plus] D:\Flutter Projs\hive\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-79
+16-->[:connectivity_plus] D:\Flutter Projs\hive\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:9:22-76
 17
 18    <permission
 18-->[androidx.core:core:1.9.0] C:\Users\markj\.gradle\caches\transforms-3\5f80b20db3afa86c72a9766b008d752d\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47

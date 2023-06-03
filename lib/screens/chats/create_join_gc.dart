@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/controllers/connection_controller.dart';
 
 import 'package:hive/screens/pages/home.dart';
 import 'package:hive/screens/utils/GC%20Creation/create_gc.dart';
@@ -28,6 +29,7 @@ class _CreateGroupChatState extends State<CreateGroupChat> {
   var codeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    ConnectionController.instance.checkRealtimeConnection();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,

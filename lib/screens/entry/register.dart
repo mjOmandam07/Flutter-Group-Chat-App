@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:hive/controllers/connection_controller.dart';
 import 'package:hive/screens/entry/login.dart';
 import 'package:hive/screens/entry/username.dart';
 import 'package:hive/screens/pages/home.dart';
@@ -18,6 +19,7 @@ class _RegisterState extends State<Register> {
   var _password_controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    ConnectionController.instance.checkRealtimeConnection();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,

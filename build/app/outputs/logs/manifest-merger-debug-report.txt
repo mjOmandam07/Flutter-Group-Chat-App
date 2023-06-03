@@ -57,6 +57,7 @@ MERGED from [:cloud_firestore] D:\Flutter Projs\hive\build\cloud_firestore\inter
 MERGED from [:firebase_core] D:\Flutter Projs\hive\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
 MERGED from [:image_picker_android] D:\Flutter Projs\hive\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-21:12
 MERGED from [:flutter_plugin_android_lifecycle] D:\Flutter Projs\hive\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:connectivity_plus] D:\Flutter Projs\hive\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.multidex:multidex:2.0.1] C:\Users\markj\.gradle\caches\transforms-3\27d6445aec3fd80f08088200c301c43a\transformed\multidex-2.0.1\AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.firebase:firebase-auth:21.3.0] C:\Users\markj\.gradle\caches\transforms-3\58e5e05b4b803d2f200c44bd64fbdce6\transformed\jetified-firebase-auth-21.3.0\AndroidManifest.xml:17:1-75:12
 MERGED from [com.google.firebase:firebase-firestore:24.5.0] C:\Users\markj\.gradle\caches\transforms-3\236ba7671bcfc848dfe902fc4ead88f1\transformed\jetified-firebase-firestore-24.5.0\AndroidManifest.xml:2:1-25:12
@@ -131,6 +132,8 @@ MERGED from [:image_picker_android] D:\Flutter Projs\hive\build\image_picker_and
 MERGED from [:image_picker_android] D:\Flutter Projs\hive\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:flutter_plugin_android_lifecycle] D:\Flutter Projs\hive\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:flutter_plugin_android_lifecycle] D:\Flutter Projs\hive\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:connectivity_plus] D:\Flutter Projs\hive\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:connectivity_plus] D:\Flutter Projs\hive\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.multidex:multidex:2.0.1] C:\Users\markj\.gradle\caches\transforms-3\27d6445aec3fd80f08088200c301c43a\transformed\multidex-2.0.1\AndroidManifest.xml:20:5-43
 MERGED from [androidx.multidex:multidex:2.0.1] C:\Users\markj\.gradle\caches\transforms-3\27d6445aec3fd80f08088200c301c43a\transformed\multidex-2.0.1\AndroidManifest.xml:20:5-43
 MERGED from [com.google.firebase:firebase-auth:21.3.0] C:\Users\markj\.gradle\caches\transforms-3\58e5e05b4b803d2f200c44bd64fbdce6\transformed\jetified-firebase-auth-21.3.0\AndroidManifest.xml:21:5-23:64
@@ -298,7 +301,9 @@ ADDED from [:image_picker_android] D:\Flutter Projs\hive\build\image_picker_andr
 	android:name
 		ADDED from [:image_picker_android] D:\Flutter Projs\hive\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:16:17-67
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from [com.google.firebase:firebase-auth:21.3.0] C:\Users\markj\.gradle\caches\transforms-3\58e5e05b4b803d2f200c44bd64fbdce6\transformed\jetified-firebase-auth-21.3.0\AndroidManifest.xml:26:5-79
+ADDED from [:connectivity_plus] D:\Flutter Projs\hive\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-79
+MERGED from [com.google.firebase:firebase-auth:21.3.0] C:\Users\markj\.gradle\caches\transforms-3\58e5e05b4b803d2f200c44bd64fbdce6\transformed\jetified-firebase-auth-21.3.0\AndroidManifest.xml:26:5-79
+MERGED from [com.google.firebase:firebase-auth:21.3.0] C:\Users\markj\.gradle\caches\transforms-3\58e5e05b4b803d2f200c44bd64fbdce6\transformed\jetified-firebase-auth-21.3.0\AndroidManifest.xml:26:5-79
 MERGED from [com.google.firebase:firebase-firestore:24.5.0] C:\Users\markj\.gradle\caches\transforms-3\236ba7671bcfc848dfe902fc4ead88f1\transformed\jetified-firebase-firestore-24.5.0\AndroidManifest.xml:12:5-79
 MERGED from [com.google.firebase:firebase-firestore:24.5.0] C:\Users\markj\.gradle\caches\transforms-3\236ba7671bcfc848dfe902fc4ead88f1\transformed\jetified-firebase-firestore-24.5.0\AndroidManifest.xml:12:5-79
 MERGED from [com.google.firebase:firebase-storage:20.1.0] C:\Users\markj\.gradle\caches\transforms-3\ea46c11e791a97fb8cf67c6856411f7d\transformed\jetified-firebase-storage-20.1.0\AndroidManifest.xml:25:5-79
@@ -306,7 +311,7 @@ MERGED from [com.google.firebase:firebase-storage:20.1.0] C:\Users\markj\.gradle
 MERGED from [io.grpc:grpc-android:1.52.1] C:\Users\markj\.gradle\caches\transforms-3\eb66d1de934e34f34682d1bf4011c284\transformed\jetified-grpc-android-1.52.1\AndroidManifest.xml:9:5-79
 MERGED from [io.grpc:grpc-android:1.52.1] C:\Users\markj\.gradle\caches\transforms-3\eb66d1de934e34f34682d1bf4011c284\transformed\jetified-grpc-android-1.52.1\AndroidManifest.xml:9:5-79
 	android:name
-		ADDED from [com.google.firebase:firebase-auth:21.3.0] C:\Users\markj\.gradle\caches\transforms-3\58e5e05b4b803d2f200c44bd64fbdce6\transformed\jetified-firebase-auth-21.3.0\AndroidManifest.xml:26:22-76
+		ADDED from [:connectivity_plus] D:\Flutter Projs\hive\build\connectivity_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:9:22-76
 activity#com.google.firebase.auth.internal.GenericIdpActivity
 ADDED from [com.google.firebase:firebase-auth:21.3.0] C:\Users\markj\.gradle\caches\transforms-3\58e5e05b4b803d2f200c44bd64fbdce6\transformed\jetified-firebase-auth-21.3.0\AndroidManifest.xml:29:9-46:20
 	android:excludeFromRecents
